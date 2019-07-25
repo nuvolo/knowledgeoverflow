@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ws_operation">
+    <sys_ws_operation action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_operation_uri/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <http_method>GET</http_method>
+        <name>Get Profile</name>
+        <operation_script><![CDATA[(function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
+	var type = request.queryParams.type[0];
+	var filter = request.queryParams.filter[0];
+	var page = request.queryParams.page[0];
+	var questionUtil = new x_nuvo_ko.QuestionUtil();
+	var tagUtil = new x_nuvo_ko.TagUtil();
+	switch(type){
+		case 'starred':
+			return questionUtil.getStarred(filter, page);
+		case 'tags':
+			return tagUtil.getWatchedQuestions(filter, page);
+		case 'answers':
+			return questionUtil.getProfileAnswers(filter, page);
+		case 'questions':
+			return questionUtil.getProfileQuestions(filter, page);
+		default:
+			return questionUtil.getProfileQuestions(filter, page);
+	}
+
+})(request, response);]]></operation_script>
+        <operation_uri>/api/x_nuvo_ko/portal/get_profile</operation_uri>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <relative_path>/get_profile</relative_path>
+        <request_example/>
+        <requires_acl_authorization>true</requires_acl_authorization>
+        <requires_authentication>true</requires_authentication>
+        <short_description/>
+        <sys_class_name>sys_ws_operation</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 20:40:08</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>362f90afdb6e3b408fdd3df3399619dd</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>Get Profile</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ws_operation_362f90afdb6e3b408fdd3df3399619dd</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-17 16:42:16</sys_updated_on>
+        <web_service_definition display_value="Knowledge Portal API">00cc9c2fdb6e3b408fdd3df3399619e8</web_service_definition>
+        <web_service_version/>
+    </sys_ws_operation>
+</record_update>

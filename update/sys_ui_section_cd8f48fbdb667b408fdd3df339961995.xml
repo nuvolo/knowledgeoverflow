@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_ui_section caption="" section_id="cd8f48fbdb667b408fdd3df339961995" sys_domain="global" table="x_nuvo_ko_questions" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.begin_split</element>
+            <position>0</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:17</sys_created_on>
+            <sys_id>418f48fbdb667b408fdd3df33996199c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:17</sys_updated_on>
+            <sys_user/>
+            <type>.begin_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>asker</element>
+            <position>1</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:17</sys_created_on>
+            <sys_id>0d8f4c3fdb667b408fdd3df3399619f7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:17</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>best_answer</element>
+            <position>2</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:17</sys_created_on>
+            <sys_id>8d8f4c3fdb667b408fdd3df3399619f7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:17</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>3</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:17</sys_created_on>
+            <sys_id>018f4c3fdb667b408fdd3df3399619f8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:17</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>best_answer_type</element>
+            <position>4</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:17</sys_created_on>
+            <sys_id>818f4c3fdb667b408fdd3df3399619f8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:17</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.end_split</element>
+            <position>5</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:17</sys_created_on>
+            <sys_id>058f4c3fdb667b408fdd3df3399619f8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:17</sys_updated_on>
+            <sys_user/>
+            <type>.end_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>description</element>
+            <position>6</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:17</sys_created_on>
+            <sys_id>858f4c3fdb667b408fdd3df3399619f8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:17</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>question</element>
+            <position>7</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:17</sys_created_on>
+            <sys_id>098f4c3fdb667b408fdd3df3399619f8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:17</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>views</element>
+            <position>8</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:17</sys_created_on>
+            <sys_id>898f4c3fdb667b408fdd3df3399619f8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:17</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>votes</element>
+            <position>9</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 18:42:59</sys_created_on>
+            <sys_id>922ecdb3db2a7b408fdd3df339961985</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 18:42:59</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>answers</element>
+            <position>10</position>
+            <sys_created_by>nicholas.durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 19:41:38</sys_created_on>
+            <sys_id>a99bd93fdb2a7b408fdd3df339961926</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>nicholas.durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 19:41:38</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>stars</element>
+            <position>11</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-25 18:14:37</sys_created_on>
+            <sys_id>a2fd93e21b7637004fc10f6e6e4bcb9d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-25 18:14:37</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>commenters</element>
+            <position>12</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-25 18:26:49</sys_created_on>
+            <sys_id>e5c063661b7637004fc10f6e6e4bcb50</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_questions" sys_domain="global" view="Default view">cd8f48fbdb667b408fdd3df339961995</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-25 18:26:49</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="INSERT_OR_UPDATE">
+            <caption/>
+            <header>false</header>
+            <name>x_nuvo_ko_questions</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-16 14:09:16</sys_created_on>
+            <sys_customer_update>false</sys_customer_update>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>cd8f48fbdb667b408fdd3df339961995</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_nuvo_ko_questions</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+            <sys_update_name>sys_ui_section_cd8f48fbdb667b408fdd3df339961995</sys_update_name>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-16 14:09:16</sys_updated_on>
+            <sys_user/>
+            <title>true</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+</record_update>

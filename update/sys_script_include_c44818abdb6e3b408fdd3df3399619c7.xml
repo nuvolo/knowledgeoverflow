@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_nuvo_ko.QuestionUtil</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>QuestionUtil</name>
+        <script><![CDATA[var QuestionUtil = Class.create();
+QuestionUtil.prototype = {
+	initialize: function() {
+		this.table = {
+			question:'x_nuvo_ko_questions',
+			votes:'x_nuvo_ko_votes',
+			starred: 'x_nuvo_ko_starred_questions',
+			answers: 'x_nuvo_ko_answers',
+			comments: 'x_nuvo_ko_comments'
+		};
+		this.tagUtil = new x_nuvo_ko.TagUtil();
+        this.communityAnswerMinVotes = 5;
+        this.resultsPerPage = 20;
+	},
+	
+	getPreview: function(gr){
+		var preview = {
+			question: gr.getValue("question"),
+			id: gr.getValue("sys_id"),
+			views: gr.getValue("views"),
+			answers: gr.getValue('answers'),
+			time: gr.getValue('sys_created_on'),
+			author: gr.asker.getRefRecord().getValue('name'),
+			votes: parseInt(gr.getValue('votes'))
+		};
+		preview.tags = this.tagUtil.getTagsForQuestion(preview.id);
+		return preview;
+	},
+	
+	get: function(question_id){
+		var gr = new GlideRecord(this.table.question);
+		gr.get(question_id);
+		if(gr.isValidRecord()){
+		this.incrementViews(question_id);
+			
+		var result = {
+			question : gr.getValue('question'),
+			description: gr.getValue('description'),
+			question_id : gr.getValue('sys_id'),
+			answers: this.getAnswersForQuestion(question_id),
+			starred: this.checkIsStarred(question_id),
+			tags: this.tagUtil.getTagsForQuestion(question_id),
+			votes: parseInt(gr.getValue('votes')),
+			comments: this.getComments('question', question_id),
+			author: gr.asker.getRefRecord().getValue('name'),
+			isAuthor: gr.asker.getRefRecord().getValue('sys_id') == gs.getUserID(),
+			time: gr.getValue('sys_created_on'),
+			best_answer: gr.getValue('best_answer'),
+			best_answer_type: gr.getValue('best_answer_type')
+		};
+			return result;
+		}
+		
+		return null;
+	},
+	
+	totalVotes: function(id, param){
+		var gr = new GlideRecord(this.table.votes);
+		gr.addQuery(param, id);
+		gr.query();
+		var votes = 0;
+		while(gr.next()) votes += parseInt(gr.getValue('point_value'));
+        if(param=='answer') param = 'answers';
+        gr = new GlideRecord(this.table[param]);
+        gr.get(id);
+        gr.votes = parseInt(votes);
+        gr.update();
+	},
+	
+	incrementViews: function(qid){
+		var gr = new GlideRecord(this.table.question);
+		gr.get(qid);
+		gr.setValue('views', gr.views+1);
+		gr.update();
+	},
+	
+	checkIsStarred: function(qid){
+		var gr = new GlideRecord(this.table.starred);
+		gr.addQuery('question',qid);
+		gr.addQuery('userid', gs.getUserID());
+		gr.query();
+		if(gr.getRowCount()==0) return false;
+		return true;
+	},
+	
+	toggleStarred:function(starred, qid){
+			var gr = new GlideRecord(this.table.starred);
+		if(starred){
+			gr.initialize();
+			gr.userid = gs.getUserID();
+			gr.question = qid;
+			gr.insert();
+		}else{
+			gr.addQuery('question',qid);
+			gr.addQuery('userid', gs.getUserID());
+			gr.query();
+			while(gr.next()){
+				gr.deleteRecord();
+			}
+		}
+	},
+	getAnswersForQuestion: function(qid){
+		var gr = new GlideRecord(this.table.answers);
+		gr.addQuery('question', qid);
+		gr.query();
+		var answers = [];
+		while(gr.next()){
+			answers.push({
+				answer:gr.getValue('answer'),
+				answer_id:gr.getValue('sys_id'),
+				votes:parseInt(gr.getValue('votes')),
+				author: gr.poster.getRefRecord().getValue('name'),
+				isAuthor: gr.poster.getRefRecord().getValue('sys_id') == gs.getUserID(),
+				time: gr.getValue('sys_created_on'),
+				comments: this.getComments('answer', gr.getValue('sys_id'))
+			});
+		}
+		return answers;
+	},
+	
+	getComments: function(param, id){
+		var gr = new GlideRecord(this.table.comments);
+		gr.orderBy('sys_created_on');
+		gr.addQuery(param, id);
+		gr.query();
+		var comments = [];
+		while(gr.next()){
+			comments.push({
+				comment:gr.getValue('comment'),
+				author: gr.commenter.getRefRecord().getValue('name'),
+				id:gr.getValue('sys_id'),
+				time: gr.getValue('sys_created_on')
+			});
+		}
+		return comments;
+	},
+	
+	createNewAnswer: function(answer, qid){
+		var gr = new GlideRecord(this.table.answers);
+		gr.initialize();
+		gr.question = qid;
+		gr.answer = answer;
+        var aid = gr.insert();
+        
+        this.updateAnswerCount(qid);
+        
+		return {new_id: aid, answers:this.getAnswersForQuestion(qid)};
+    },
+    
+    updateAnswerCount: function(qid){
+        var gr = new GlideRecord(this.table.answers);
+		gr.addQuery('question', qid);
+		gr.query();
+        var answers = gr.getRowCount();
+        
+        gr = new GlideRecord(this.table.question);
+        gr.get(qid);
+        gr.answers = answers;
+        gr.update();
+    },
+	
+	createNewQuestion: function(question, description, tags){
+		var gr = new GlideRecord(this.table.question);
+		gr.initialize();
+		gr.question = question;
+		gr.description = description;
+		
+		var qid = gr.insert();
+		tags = tags.split(',');
+		for(var i=0; i<tags.length; i++){
+			if(tags[i].length > 0) this.tagUtil.tagQuestion(qid, tags[i]);
+		}
+		
+		return qid;
+	},
+	
+	createNewComment: function(param, id, comment){
+		var gr = new GlideRecord(this.table.comments);
+		gr.initialize();
+		gr[param] = id;
+		gr.comment = comment;
+		return gr.insert();
+	},
+	
+	updateQuestion: function(qid, question, description, tags){
+		var gr = new GlideRecord(this.table.question);
+		gr.get(qid);
+		if(gr.asker.getRefRecord().getValue('sys_id') == gs.getUserID()){
+			gr.question = question;
+			gr.description = description;
+			gr.update();
+			tags = tags.split(',');
+			this.tagUtil.stripTags(qid);
+			for(var i=0; i<tags.length; i++){
+				if(tags[i].length > 0) this.tagUtil.tagQuestion(qid, tags[i]);
+			}
+		}
+	},
+	
+	updateAnswer: function(aid, answer){
+		var gr = new GlideRecord(this.table.answers);
+		gr.get(aid);
+		if(gr.poster.getRefRecord().getValue('sys_id') == gs.getUserID()){
+			gs.info("ND updating answer");
+			gr.answer = answer;
+			gr.update();
+		}
+	},
+	
+	
+	
+	
+	checkCommunityAnswer: function(aid){
+        var gr = new GlideRecord(this.table.answers);
+		gr.get(aid);
+		var votes = parseInt(gr.getValue('votes'));
+		if(votes >= this.communityAnswerMinVotes){
+			//get qid
+			var qid = gr.question;
+			//check not moderator
+			gr = new GlideRecord(this.table.question);
+			gr.get(qid);
+			if(gr.getValue('best_answer_type') !== 'moderator'){
+				//check max votes
+                var best_aid = gr.getValue('best_answer');
+                var gr2 = new GlideRecord(this.table.answers);
+                gr2.get(best_aid);
+				var best_votes = gr2.getValue('votes');
+				if(votes>best_votes || (gr.getValue('best_answer_type') =='accepted' && best_aid ==aid)) this.markBestAnswer(qid, aid, 'community');
+			} 
+		}
+	},
+	
+	markBestAnswer: function(qid, aid, type){
+		var moderator = gs.hasRole('moderator');
+		
+		var gr = new GlideRecord(this.table.question);
+		gr.get(qid);
+		var currentType = gr.getValue('best_answer_type');
+		var author = gr.getValue('sys_created_by');
+		
+		var allowMark = false;
+		if(type=='accepted' && author==gs.getUserName() && currentType!='moderator' &&currentType != 'community') allowMark = true;
+		else if(type=='moderator' && moderator) allowMark = true;
+		else if(type=='community' && currentType !='moderator') allowMark = true;
+		
+		if(allowMark){
+			gr.best_answer = aid;
+			gr.best_answer_type = type;
+			gr.update();
+			return;
+		}
+	},
+	
+	getRecents: function(){
+		var gr = new GlideRecord(this.table.question);
+		return this.paginate(gr).previews;
+	},
+	
+	getProfileQuestions: function(filter, page){
+		var gr = new GlideRecord(this.table.question);
+		gr.addQuery('sys_created_by', gs.getUserName());
+		return this.paginate(gr, filter, page);
+	},
+	
+	getProfileAnswers: function(filter, page){
+		if(!filter) filter = '';
+        if(!page) page = 1;
+		
+		var startWindow = (page - 1) * this.resultsPerPage;
+		var endWindow = page * this.resultsPerPage;
+		
+		var gr = new GlideRecord(this.table.answers);
+		gr.addQuery('sys_created_by', gs.getUserName());
+		
+		if(filter=='top') gr.orderByDesc('votes');
+		gr.orderByDesc('sys_created_on');
+		gr.chooseWindow(startWindow, endWindow, true);
+		
+		gr.query();
+		var results = [];
+		while(gr.next()){
+			var q = gr.getElement('question').getRefRecord().getValue('question');
+			results.push({
+				question:q,
+				question_id: gr.getValue('question'),
+				tags: this.tagUtil.getTagsForQuestion(gr.getValue('question')),
+				answer:gr.getValue('answer'),
+				answer_id:gr.getValue('sys_id'),
+				votes:parseInt(gr.getValue('votes')),
+				time: gr.getValue('sys_created_on')
+			});
+		}
+		return {
+			previews:results,
+			results:gr.getRowCount(),
+			pageSize: this.resultsPerPage,
+			type:'answer'
+		};
+	},
+	
+	getStarred: function(filter, page){
+        var gr= new GlideRecord(this.table.question);
+        var grJ = gr.addJoinQuery(this.table.starred);
+        grJ.addCondition('userid', gs.getUserID());
+		return this.paginate(gr, filter, page);
+    },
+	
+	query: function(filter, page){
+		var gr = new GlideRecord(this.table.question);
+		return this.paginate(gr, filter, page);
+	},
+	
+	paginate: function(gr, filter, page){
+		if(!filter) filter = '';
+        if(!page) page = 1;
+		
+		var startWindow = (page - 1) * this.resultsPerPage;
+		var endWindow = page * this.resultsPerPage;
+		
+        if(filter=='top') gr.orderByDesc('votes');
+        if(filter=='unanswered') gr.addQuery('answers', 0);
+		if(filter!='none') gr.orderByDesc('sys_created_on');
+		gr.chooseWindow(startWindow, endWindow);
+		gr.query();
+		var previews = [];
+		while(gr.next()) previews.push(this.getPreview(gr));
+		
+		return {
+			previews:previews,
+			results:gr.getRowCount(),
+			pageSize: this.resultsPerPage,
+			type:'question'
+		};
+	},
+	
+	type: 'QuestionUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 20:14:02</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>c44818abdb6e3b408fdd3df3399619c7</sys_id>
+        <sys_mod_count>106</sys_mod_count>
+        <sys_name>QuestionUtil</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_script_include_c44818abdb6e3b408fdd3df3399619c7</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-24 19:30:23</sys_updated_on>
+    </sys_script_include>
+</record_update>

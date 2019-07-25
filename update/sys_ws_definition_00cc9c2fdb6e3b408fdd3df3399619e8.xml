@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ws_definition">
+    <sys_ws_definition action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <base_uri>/api/x_nuvo_ko/portal</base_uri>
+        <consumes>application/json,application/xml,text/xml</consumes>
+        <consumes_customized>false</consumes_customized>
+        <default_version>No active default version</default_version>
+        <doc_link/>
+        <enforce_acl>cf9d01d3e73003009d6247e603f6a990</enforce_acl>
+        <is_versioned>false</is_versioned>
+        <name>Knowledge Portal API</name>
+        <namespace>x_nuvo_ko</namespace>
+        <produces>application/json,application/xml,text/xml</produces>
+        <produces_customized>false</produces_customized>
+        <service_id>portal</service_id>
+        <short_description/>
+        <sys_class_name>sys_ws_definition</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 20:29:06</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>00cc9c2fdb6e3b408fdd3df3399619e8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Knowledge Portal API</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ws_definition_00cc9c2fdb6e3b408fdd3df3399619e8</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-15 20:29:06</sys_updated_on>
+    </sys_ws_definition>
+</record_update>

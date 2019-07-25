@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Votes" max_length="40" name="x_nuvo_ko_votes" type="collection">
+        <element label="Answer" max_length="32" name="answer" reference="x_nuvo_ko_answers" type="reference"/>
+        <element label="Point Value" max_length="3" name="point_value" type="integer"/>
+        <element label="Question" max_length="32" name="question" reference="x_nuvo_ko_questions" type="reference"/>
+        <element label="UserID" max_length="40" name="userid" type="string"/>
+        <index name="index">
+            <element name="answer"/>
+        </index>
+        <index name="index2">
+            <element name="question"/>
+        </index>
+    </element>
+</database>

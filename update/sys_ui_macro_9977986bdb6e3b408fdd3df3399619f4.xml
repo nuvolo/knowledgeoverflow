@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>ViewSearchTags</name>
+        <scoped_name>x_nuvo_ko_ViewSearchTags</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 20:05:38</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>9977986bdb6e3b408fdd3df3399619f4</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>ViewSearchTags</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_macro_9977986bdb6e3b408fdd3df3399619f4</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-22 15:12:15</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<h3>Questions tagged "{{vm.tag}}"</h3>
+	<button ng-class='{hide: vm.watched == true}' ng-click='vm.watch(true)'><i class="fa fa-eye"></i> Watch Tag</button>
+	<button ng-class='{hide: vm.watched == false}'  ng-click='vm.watch(false)'><i class="fa fa-eye-slash"></i> Unwatch Tag</button>
+	<results></results>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>

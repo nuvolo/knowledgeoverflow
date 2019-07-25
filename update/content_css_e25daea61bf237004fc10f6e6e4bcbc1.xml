@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="content_css">
+    <content_css action="INSERT_OR_UPDATE">
+        <name>mobile</name>
+        <style>@media screen and (max-width: 500px) {&#13;
+    &#13;
+    .mobile-hide{&#13;
+        display:none;&#13;
+    }&#13;
+    .banner{&#13;
+        width:100%;&#13;
+        overflow: auto;&#13;
+        display:flex;&#13;
+        height:60px;&#13;
+    }&#13;
+    .search-container {&#13;
+min-width:auto;&#13;
+    }&#13;
+    .search-button, .menu{&#13;
+        display:block;&#13;
+        width:auto;&#13;
+    }&#13;
+&#13;
+    .search {&#13;
+        display:block;&#13;
+    }&#13;
+&#13;
+    .banner .side-button {&#13;
+        width: 150px;&#13;
+        white-space: nowrap;&#13;
+    }&#13;
+&#13;
+    .mobile-menu{&#13;
+        position: absolute;&#13;
+        top:55px;&#13;
+        z-index: 50;&#13;
+        width:100%;&#13;
+        background:whitesmoke;&#13;
+        padding-top:5px;&#13;
+        border-bottom:1px solid grey;&#13;
+    }&#13;
+    .mobile-menu-item{&#13;
+        height:50px;&#13;
+        border-top:1px solid grey;&#13;
+        padding:5px;&#13;
+        text-align: center;&#13;
+        font-size:20px;&#13;
+    }&#13;
+    .mainbar{&#13;
+        min-width:200px;&#13;
+        padding-right:10px;&#13;
+        padding-left:10px;&#13;
+    }&#13;
+&#13;
+    #topic-overview{&#13;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));&#13;
+        grid-gap:5px;&#13;
+    }&#13;
+}</style>
+        <sys_class_name>content_css</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-25 14:42:19</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>e25daea61bf237004fc10f6e6e4bcbc1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>mobile</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>content_css_e25daea61bf237004fc10f6e6e4bcbc1</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-25 14:42:19</sys_updated_on>
+        <type>local</type>
+        <url/>
+    </content_css>
+</record_update>

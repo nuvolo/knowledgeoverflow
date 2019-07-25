@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>ViewQuestion</name>
+        <scoped_name>x_nuvo_ko_ViewQuestion</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 20:03:14</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>30e6182bdb6e3b408fdd3df33996193b</sys_id>
+        <sys_mod_count>33</sys_mod_count>
+        <sys_name>ViewQuestion</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_macro_30e6182bdb6e3b408fdd3df33996193b</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-24 18:44:53</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<div ng-class='{"hide":!vm.noQuestion}'>
+		No question with the id {{vm.question_id}} was found
+	</div>
+	<div ng-class='{"hide":vm.noQuestion}'>
+	<div class='wrapper-horizontal'>
+		<votes></votes>
+        
+        <div class='question-container wrapper-vertical'>
+            <div>
+				<div class='question-title'>
+					<h4>{{vm.question}}</h4>
+				</div>
+                <div ng-bind-html = 'vm.description | renderHtml'></div>
+            </div>
+            <div>
+                <div class='tags-container wrapper-horizontal'>
+					<span ng-repeat='tag in vm.tags'>
+						<tag></tag>
+					</span>
+				</div>
+				<div class='info'>
+					<span>Asked by</span>
+					<span class='user'>{{vm.author}}</span>
+					<span>on</span>
+					<span class='time' ng-bind='vm.time | formatDate'></span>
+				</div>
+				<div class='info edit-button' ng-class='{"hide":!vm.isAuthor}'>
+					<span>
+						<a class='ui-link' ui-sref='edit({qid:"{{vm.question_id}}"})'>Edit</a>
+					</span>
+				</div>
+            </div>
+			<comments></comments>
+            
+        </div>
+    </div>	
+    <div class='answers-container'>
+        <div ng-repeat='answer in vm.answers'>
+            <answer ng-attr-id="{{ 'answer-' + answer.answer_id }}"></answer>
+        </div>
+    </div>
+	<div>
+            <form ng-submit='vm.postNewAnswer()'>
+                <div class='wrapper-vertical'>
+                    <div>
+                        <h3>Add an Answer</h3>
+                    </div>
+					<div class='wrapper-vertical'>
+						<editor></editor>
+					</div>
+					<div ng-class='{hide: vm.newAnswerText.length == 0}'>
+						<div class='preview wrapper-vertical'>
+							 <div ng-bind-html='vm.editorText | renderHtml' class='question-container'></div>
+						</div>
+
+						<div class='post-wrapper'>
+							<button type='submit'>Post</button>
+						</div>
+					</div>
+                </div>
+            </form>
+        </div>
+		</div>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>

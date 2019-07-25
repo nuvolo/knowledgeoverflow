@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="content_css">
+    <content_css action="INSERT_OR_UPDATE">
+        <name>prettify</name>
+        <style>/**&#13;
+ * @license&#13;
+ * Copyright (C) 2015 Google Inc.&#13;
+ *&#13;
+ * Licensed under the Apache License, Version 2.0 (the "License");&#13;
+ * you may not use this file except in compliance with the License.&#13;
+ * You may obtain a copy of the License at&#13;
+ *&#13;
+ *      http://www.apache.org/licenses/LICENSE-2.0&#13;
+ *&#13;
+ * Unless required by applicable law or agreed to in writing, software&#13;
+ * distributed under the License is distributed on an "AS IS" BASIS,&#13;
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.&#13;
+ * See the License for the specific language governing permissions and&#13;
+ * limitations under the License.&#13;
+ */&#13;
+&#13;
+/* Pretty printing styles. Used with prettify.js. */&#13;
+&#13;
+&#13;
+/* SPAN elements with the classes below are added by prettyprint. */&#13;
+.pln { color: #000 }  /* plain text */&#13;
+&#13;
+@media screen {&#13;
+  .str { color: #080 }  /* string content */&#13;
+  .kwd { color: #008 }  /* a keyword */&#13;
+  .com { color: #800 }  /* a comment */&#13;
+  .typ { color: #606 }  /* a type name */&#13;
+  .lit { color: #066 }  /* a literal value */&#13;
+  /* punctuation, lisp open bracket, lisp close bracket */&#13;
+  .pun, .opn, .clo { color: #660 }&#13;
+  .tag { color: #008 }  /* a markup tag name */&#13;
+  .atn { color: #606 }  /* a markup attribute name */&#13;
+  .atv { color: #080 }  /* a markup attribute value */&#13;
+  .dec, .var { color: #606 }  /* a declaration; a variable name */&#13;
+  .fun { color: red }  /* a function name */&#13;
+}&#13;
+&#13;
+/* Use higher contrast and text-weight for printable form. */&#13;
+@media print, projection {&#13;
+  .str { color: #060 }&#13;
+  .kwd { color: #006; font-weight: bold }&#13;
+  .com { color: #600; font-style: italic }&#13;
+  .typ { color: #404; font-weight: bold }&#13;
+  .lit { color: #044 }&#13;
+  .pun, .opn, .clo { color: #440 }&#13;
+  .tag { color: #006; font-weight: bold }&#13;
+  .atn { color: #404 }&#13;
+  .atv { color: #060 }&#13;
+}&#13;
+&#13;
+/* Specify class=linenums on a pre to get line numbering */&#13;
+ol.linenums { margin-top: 0; margin-bottom: 0 } /* IE indents via margin-left */</style>
+        <sys_class_name>content_css</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-23 17:59:34</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>e5078d46db72f3008fdd3df339961971</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>prettify</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>content_css_e5078d46db72f3008fdd3df339961971</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-23 17:59:34</sys_updated_on>
+        <type>local</type>
+        <url/>
+    </content_css>
+</record_update>

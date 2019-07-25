@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>PaginatedResults</name>
+        <scoped_name>x_nuvo_ko_PaginatedResults</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-17 13:00:21</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>ca3985c8db32bb408fdd3df339961984</sys_id>
+        <sys_mod_count>32</sys_mod_count>
+        <sys_name>PaginatedResults</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_macro_ca3985c8db32bb408fdd3df339961984</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-22 14:14:34</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<div class='filter-tabs wrapper-horizontal'>
+		<div class='tab-spacer'></div>
+		<button ui-sref = '{filter:"relevance"}' class = 'btn' ng-class='{active: vm.filter == "relevance", "hide":vm.method!="search"}'>Relevance</button>
+		<button ui-sref = '{filter:"newest"}' class = 'btn' ng-class='{active: vm.filter == "newest"}'>Newest</button>
+		<button ui-sref = '{filter:"unanswered"}' class = 'btn' ng-class='{active: vm.filter == "unanswered", "hide":vm.type=="answer"}'>Unanswered</button>
+		<button ui-sref = '{filter:"top"}' class = 'btn' ng-class='{active: vm.filter == "top"}'>Top</button>
+		<div class='tab-spacer' style='max-width:20px'></div>
+	</div>
+	<div>
+		<div>Found {{vm.results}} {{vm.type}}s</div>
+		<div ng-class='{"hide":vm.results==0}'>Page {{vm.page}} of {{vm.totalPages}}</div>
+	</div>
+	<div class='wrapper-vertical'>
+		<div ng-class='{"hide":vm.type!="question"}' class='wrapper-vertical'>
+			<preview ng-repeat = 'preview in vm.previews' class='preview'></preview>
+		</div>
+		<div ng-class='{"hide":vm.type!="answer"}' class='wrapper-vertical'>
+			<answerpreview ng-repeat = 'preview in vm.previews' class='preview'></answerpreview>
+		</div>
+	</div>
+	<div class='wrapper-horizontal' style='margin-top:10px' ng-class='{"hide":vm.results==0}'>
+		<button ng-click='vm.lastPage()'>Last</button>
+		<div style='flex:1;'></div>
+		<button ng-click='vm.nextPage()' ng-disabled = 'vm.page == vm.totalPages'>Next</button>
+	</div>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>

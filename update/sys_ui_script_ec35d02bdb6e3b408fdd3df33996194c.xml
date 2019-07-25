@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <name>x_nuvo_ko.router</name>
+        <script><![CDATA[var mod = angular.module("kmapp", ['ngSanitize', 'ui.router']);
+
+mod.directive("search", search_def);
+mod.directive("answer", answer_def);
+mod.directive("banner", banner_def);
+mod.directive('preview', question_preview_def);
+mod.directive('answerpreview', answer_preview_def);
+mod.directive('results', results_def);
+mod.directive('comments', comments_def);
+mod.directive('tag', tag_def);
+mod.directive('votes', votes_def);
+mod.directive('editor', editor_def);
+
+mod.config(function ($stateProvider) {
+	$stateProvider.state('home', home_view_def());
+	$stateProvider.state('ask', ask_view_def());
+	$stateProvider.state('question', question_view_def());
+	$stateProvider.state('search', search_view_def());
+	$stateProvider.state('tag', tag_view_def());
+	$stateProvider.state('profile', profile_view_def());
+	$stateProvider.state('questions', all_questions_view_def());
+	$stateProvider.state('tags', all_tags_view_def());
+	$stateProvider.state('edit', edit_view_def());
+});
+
+mod.run(function($state, $http){
+	$http.defaults.headers.common["X-UserToken"] = g_ck;
+	//TODO: Only redirect home on not found
+// 	$state.go('home');
+});
+
+mod.service("voteService", vote_service_def);
+mod.service("createService", create_service_def);
+mod.service("questionService", question_service_def);
+mod.service("tagsService", tags_service_def);
+mod.service("resultsService", results_service_def);
+
+
+marked.setOptions({
+	breaks:true
+});
+
+mod.filter('renderHtml', function(){
+	return function(val){
+		if(val){
+			var div = document.createElement('div');
+			div.innerHTML = marked(val);
+			var list = div.getElementsByTagName('code');
+			for(var i = 0; i<list.length; i++){
+				if(list[i].parentNode.nodeName === 'PRE'){
+				list[i].innerHTML = PR.prettyPrintOne(list[i].innerHTML,null,true);
+				}
+				else{
+				list[i].innerHTML = PR.prettyPrintOne(list[i].innerHTML);
+				}
+			}
+			return div.innerHTML;
+		}
+		return "";
+	};
+});
+
+mod.filter('formatDate', function(){
+	return function (d, local) {
+		if(!local) d = new Date(d + " UTC");
+		var hr = d.getHours();
+		var min = d.getMinutes();
+		min = ("0" + min).slice(-2);
+		var mo = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()];
+		var yr = d.getFullYear().toString().slice(2);
+		var date = d.getDate();
+		return (mo + " " + date + ", '" + yr + " at " + hr + ":" + min);
+	};
+});]]></script>
+        <script_name>router</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 19:55:53</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>ec35d02bdb6e3b408fdd3df33996194c</sys_id>
+        <sys_mod_count>89</sys_mod_count>
+        <sys_name>x_nuvo_ko.router</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_script_ec35d02bdb6e3b408fdd3df33996194c</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-24 16:24:24</sys_updated_on>
+        <use_scoped_format>false</use_scoped_format>
+    </sys_ui_script>
+</record_update>

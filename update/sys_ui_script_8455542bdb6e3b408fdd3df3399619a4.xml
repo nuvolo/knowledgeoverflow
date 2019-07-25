@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <name>x_nuvo_ko.services</name>
+        <script><![CDATA[var portalPaths = {
+	searchQuestion: '/api/x_nuvo_ko/portal/search_question',
+	searchTag: '/api/x_nuvo_ko/portal/search_tag',
+	getTopTags: '/api/x_nuvo_ko/portal/get_top_tags',
+	autofillTags:'/api/x_nuvo_ko/portal/autofill_tags',
+	getQuestion: '/api/x_nuvo_ko/portal/get_question',
+	vote: '/api/x_nuvo_ko/portal/vote',
+	toggleStarred: '/api/x_nuvo_ko/portal/toggle_starred',
+	createAnswer: '/api/x_nuvo_ko/portal/create_answer',
+	createQuestion: '/api/x_nuvo_ko/portal/create_question',
+	createComment: '/api/x_nuvo_ko/portal/create_comment',
+	markBestAnswer: '/api/x_nuvo_ko/portal/mark_best_answer',
+	getRecentQuestions: '/api/x_nuvo_ko/portal/get_recent_questions',
+	getProfile: '/api/x_nuvo_ko/portal/get_profile',
+	watchTag: '/api/x_nuvo_ko/portal/watch_tag',
+	queryQuestions: '/api/x_nuvo_ko/portal/query_questions',
+	tagIsWatched: '/api/x_nuvo_ko/portal/tag_is_watched',
+	updateQuestion:'/api/x_nuvo_ko/portal/update_question',
+	updateAnswer:'/api/x_nuvo_ko/portal/update_answer'
+};
+
+function question_service_def($http) {
+	var publicApi = {
+		get: get,
+		subscribe: subscribe,
+		markBestAnswer: markBestAnswer,
+		toggleStarred: toggleStarred
+	};
+	
+	var questionSubscribers = [];
+	
+	function get(question_id) {
+		var queryString = buildQueryString({
+			id: question_id
+		});
+		return $http.get(portalPaths.getQuestion + queryString)
+		.then(transformResponse).then(function (result) {
+			questionSubscribers.forEach(function (callback) {
+				callback(result);
+			});
+			return result;
+		});
+	}
+	
+	function subscribe(callback) {
+		questionSubscribers.push(callback);
+	}
+	
+	function markBestAnswer(qid, aid, type) {
+		var queryString = buildQueryString({
+			qid: qid,
+			aid: aid,
+			type: type
+		});
+		return $http.post(portalPaths.markBestAnswer + queryString);
+	}
+	
+	function toggleStarred(starred, qid) {
+		var queryString = buildQueryString({
+			starred: starred,
+			qid: qid
+		});
+		$http.post(portalPaths.toggleStarred + queryString);
+	}
+	
+	return publicApi;
+}
+
+function tags_service_def($http) {
+	var publicApi = {
+		autofillTags:autofillTags,
+		getTopTags:getTopTags,
+		watchTag: watchTag,
+		isWatched:isWatched,
+		autoSubscribe:autoSubscribe
+	};
+	function autofillTags(input, fullView){
+		var query = buildQueryString({
+			input: input,
+			full: fullView
+		});
+		return $http.get(portalPaths.autofillTags + query)
+		.then(transformResponse).then(autoTagsCallback);
+	}
+	var autoTagsCallback;
+	function autoSubscribe(f) {
+		autoTagsCallback = f;
+	}
+	
+	function getTopTags(fullView) {
+		var query = buildQueryString({
+			full: fullView
+		});
+		return $http.get(portalPaths.getTopTags + query).then(transformResponse);
+	}
+	
+	function watchTag(tag, watch) {
+		var query = buildQueryString({
+			tag: tag,
+			watch: watch
+		});
+		return $http.post(portalPaths.watchTag + query).then(transformResponse);
+	}
+	function isWatched(tag){
+		var query = buildQueryString({
+			tag: tag
+		});
+		return $http.get(portalPaths.tagIsWatched + query)
+		.then(transformResponse);
+	}
+	
+	return publicApi;
+}
+
+function vote_service_def($http) {
+	var publicApi = {
+		vote: vote,
+		get: get,
+		subscribe: subscribe
+	};
+	
+	function vote(dir, id, param) {
+		var queryString = buildQueryString({
+			dir: dir,
+			id: id,
+			param: param
+		});
+		$http.post(portalPaths.vote + queryString);
+	}
+	
+	function get(id, param) {
+		var queryString = buildQueryString({
+			id: id,
+			param: param
+		});
+		$http.get(portalPaths.vote + queryString)
+		.then(transformResponse).then(notifySubscribers);
+	}
+	
+	function notifySubscribers(result) {
+		subscribers.forEach(function (callback) {
+			callback(result);
+		});
+		return result;
+	}
+	
+	var subscribers = [];
+	
+	function subscribe(callback) {
+		subscribers.push(callback);
+	}
+	
+	return publicApi;
+}
+
+function create_service_def($http) {
+	var publicApi = {
+		createAnswer: createAnswer,
+		createQuestion: createQuestion,
+		createComment: createComment,
+		updateQuestion: updateQuestion,
+		updateAnswer: updateAnswer
+	};
+	
+	function createAnswer(answer, question_id) {
+		var queryString = buildQueryString({
+			qid: question_id,
+			answer: answer
+		});
+		return $http.post(portalPaths.createAnswer + queryString)
+		.then(transformResponse);
+	}
+	
+	function createQuestion(question, description, tags) {
+		var queryString = buildQueryString({
+			question: question,
+			description: description,
+			tags: tags
+		});
+		return $http.post(portalPaths.createQuestion + queryString).then(transformResponse);
+	}
+	
+	function createComment(param, id, comment) {
+		var queryString = buildQueryString({
+			param: param,
+			id: id,
+			comment: comment
+		});
+		return $http.post(portalPaths.createComment + queryString).then(transformResponse);
+	}
+	
+	function updateQuestion(qid, question, description, tags){
+		var queryString = buildQueryString({
+			qid: qid,
+			question: question,
+			description: description,
+			tags: tags
+		});
+		return $http.post(portalPaths.updateQuestion + queryString);
+	}
+	
+	function updateAnswer(aid, answer){
+		var queryString = buildQueryString({
+			aid: aid,
+			answer: answer
+		});
+		return $http.post(portalPaths.updateAnswer + queryString);
+	}
+	
+	return publicApi;
+}
+
+function results_service_def($http){
+	var publicApi = {
+		query: query
+	};
+	
+	function query(method,filter,page,obj){
+		obj.filter = filter; obj.page = page;
+		var queryString = buildQueryString(obj);
+		return functions[method](queryString).then(function(res){
+			return res;
+		});
+	}
+	var functions = {
+		all: function(qs){
+			return $http.get(portalPaths.queryQuestions + qs)
+			.then(transformResponse);
+		},
+		profile: function (qs) {
+			return $http.get(portalPaths.getProfile + qs).then(transformResponse);
+		},
+		tagSearch: function (qs) {
+			return $http.get(portalPaths.searchTag + qs)
+			.then(transformResponse);
+		},
+		search: function(qs){
+			return $http.get(portalPaths.searchQuestion + qs)
+			.then(transformResponse);
+		}
+	};
+	
+	return publicApi;
+}
+
+
+function buildQueryString(params) {
+	//Build the query string with template '?param1=val1&param2=val2...'
+	var esc = encodeURIComponent;
+	var query = Object.keys(params)
+	.map(function (k) {
+		return esc(k) + '=' + esc(params[k]);
+	})
+	.join('&');
+	return "?" + query;
+}
+
+function transformResponse(res) {
+	return res.data.result;
+}]]></script>
+        <script_name>services</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 19:56:20</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>8455542bdb6e3b408fdd3df3399619a4</sys_id>
+        <sys_mod_count>35</sys_mod_count>
+        <sys_name>x_nuvo_ko.services</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_script_8455542bdb6e3b408fdd3df3399619a4</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-24 19:25:42</sys_updated_on>
+        <use_scoped_format>false</use_scoped_format>
+    </sys_ui_script>
+</record_update>

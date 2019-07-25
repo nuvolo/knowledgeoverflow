@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <name>x_nuvo_ko.views</name>
+        <script><![CDATA[function all_tags_view_def() {
+    var view = {
+        templateUrl: "AJAXJellyRunner.do?template=x_nuvo_ko_ViewTags",
+        controller: tags_ctrl,
+        controllerAs: "vm",
+        scope: true,
+        url: '/tags'
+    };
+
+    function tags_ctrl($scope, tagsService) {
+        var vm = this;
+        vm.tagList = [];
+
+        tagsService.autoSubscribe(function (tags) {
+            vm.tagList = tags;
+        });
+        vm.filter = '';
+        $scope.$watch('vm.filter', function (newVal) {
+            if (newVal != '') tagsService.autofillTags(newVal, true);
+            else getTop();
+        });
+
+        function getTop() {
+            tagsService.getTopTags(true).then(function (data) {
+                vm.tagList = data;
+                vm.tagList.sort(function (a, b) {
+                    if (a.count > b.count) return -1;
+                    else return 1;
+                });
+            });
+        }
+        getTop();
+
+    }
+
+    return view;
+}
+
+function all_questions_view_def(){
+	var results = {
+        templateUrl: 'AJAXJellyRunner.do?template=x_nuvo_ko_QuestionsResults',
+        scope: false,
+        name: 'questions',
+		url: '/questions?filter',
+		controller: questions_ctrl,
+		controllerAs:'vm'
+	};
+	
+	function questions_ctrl(){
+		var vm = this;
+		vm.resultsMethod = 'all';
+	}
+
+	return results;
+}
+
+function home_view_def() {
+    var summary = {
+        templateUrl: "AJAXJellyRunner.do?template=x_nuvo_ko_ViewHome",
+        controller: summary_ctrl,
+        controllerAs: "vm",
+        scope: true,
+        name: 'home',
+        url: '/home'
+    };
+
+    function summary_ctrl(tagsService, resultsService) {
+        var vm = this;
+		
+		resultsService.query('all','newest','1',{}).then(function(data){
+			vm.recents = data.previews;
+		});
+		
+        tagsService.getTopTags().then(function (data) {
+            vm.allTags = data;
+            vm.allTags.sort(function (a, b) {
+                if (a.questions > b.questions) return -1;
+                else return 1;
+            });
+        });
+    }
+    return summary;
+
+}
+
+function tag_view_def() {
+    var page = {
+        url: '/tag/:tag?filter',
+        name: 'tag search',
+        templateUrl: 'AJAXJellyRunner.do?template=x_nuvo_ko_ViewSearchTags',
+        controller: page_ctrl,
+        controllerAs: 'vm',
+        scope: true
+    };
+
+    function page_ctrl($stateParams, tagsService) {
+        var vm = this;
+        vm.tag = $stateParams.tag;
+		vm.watched = false;
+		
+		vm.resultsMethod='tagSearch';
+		vm.params = {
+			tag:vm.tag
+		};
+		
+		tagsService.isWatched(vm.tag).then(function(data){
+			vm.watched = data;
+		});
+		
+		vm.watch = function(watch){
+			tagsService.watchTag(vm.tag, watch);
+			vm.watched = watch;
+		};
+    }
+
+    return page;
+}
+
+function search_view_def() {
+    var page = {
+        templateUrl: "AJAXJellyRunner.do?template=x_nuvo_ko_ViewSearch",
+        controller: page_ctrl,
+        controllerAs: "vm",
+        scope: true,
+        url: '/search?q?filter'
+    };
+
+    function page_ctrl($stateParams) {
+        var vm = this;
+        vm.searchPhrase = $stateParams.q;
+		
+		vm.resultsMethod = "search";
+		vm.params = {
+			phrase: vm.searchPhrase
+		};
+    }
+
+    return page;
+}
+
+function profile_view_def(){
+	var profile = {
+        templateUrl: "AJAXJellyRunner.do?template=x_nuvo_ko_ViewProfile",
+        controller: profile_ctrl,
+        controllerAs: "vm",
+        scope: true,
+        url: '/profile?tab?filter'
+    };
+	
+	function profile_ctrl($stateParams){
+		var vm = this;
+		vm.tab = $stateParams.tab;
+		if(vm.tab === undefined) vm.tab = 'questions';
+		
+		vm.resultsMethod = "profile";
+		vm.params = {
+			type: vm.tab
+		};
+	}
+	
+	return profile;
+}
+
+function question_view_def() {
+    var summary = {
+        templateUrl: "AJAXJellyRunner.do?template=x_nuvo_ko_ViewQuestion",
+        controller: summary_ctrl,
+        controllerAs: "vm",
+        scope: true,
+        url: '/questions/{id}'
+    };
+
+    function summary_ctrl($stateParams, $element, $scope, questionService, createService) {
+        var vm = this;
+        vm.question_id = $stateParams.id;
+        questionService.get(vm.question_id);
+		
+		vm.noQuestion = false;
+        questionService.subscribe(function (data) {
+			if(data===undefined) vm.noQuestion = true;
+			else{
+				Object.assign(vm, data);
+
+				vm.answers.sort(function (a, b) {
+					if (a.answer_id == vm.best_answer) return -1;
+					if (b.answer_id == vm.best_answer) return 1;
+					if (a.votes !== b.votes) return b.votes - a.votes;
+					return new Date(a.time) - new Date(b.time);
+				});
+
+				vm.editorText = "";
+			}
+        });
+
+        vm.postNewAnswer = function () {
+			if (vm.editorText.length < 10) alert("Answer length must be at least 10 characters");
+			else if (vm.editorText.length > 5000) alert("Answer length must be less than 5000 characters. Current length is " + vm.editorText.length +" characters");
+			else {
+            createService.createAnswer(vm.editorText, vm.question_id).then(function (data) {
+				vm.editorText = "";
+                data.answers.sort(function (a, b) {
+                    if (a.answer_id == vm.best_answer) return -1;
+                    if (b.answer_id == vm.best_answer) return 1;
+                    if (a.votes !== b.votes) return b.votes - a.votes;
+                    return new Date(a.time) - new Date(b.time);
+                });
+                vm.answers = data.answers;
+			});
+		}
+        };
+    }
+
+    return summary;
+}
+
+function ask_view_def() {
+	var ask = {
+		templateUrl: "AJAXJellyRunner.do?template=x_nuvo_ko_ViewAsk",
+		controller: ask_ctrl,
+		controllerAs: "vm",
+		scope: false,
+		name: 'ask',
+		url: '/ask'
+	};
+
+	function ask_ctrl($state, $element, $scope, createService, tagsService) {
+		var vm = this;
+		vm.tagList = [];
+		vm.addedTag = "";
+		vm.author = g_user.getFullName();
+		vm.time = new Date();
+		vm.review = false;
+
+		vm.postNewQuestion = function () {
+			if (vm.editorText.length < 10) alert("Description length must be at least 10 characters");
+			else if (vm.editorText.length > 5000) alert("Description length must be less than 5000 characters. Current length is " + vm.editorText.length +" characters");
+			else {
+				if (vm.review) {
+					createService.createQuestion(vm.newQuestionTitle, vm.editorText, vm.tagList)
+						.then(function (id) {
+							$state.go('question', {
+								id: id
+							});
+						});
+				}
+				vm.review = true;
+			}
+        };
+        vm.autofillList = [];
+
+        tagsService.autoSubscribe(function(tags){
+            tags.forEach(function(tag){
+                if(vm.autofillList.indexOf(tag.name) == -1) vm.autofillList.push(tag.name);
+            });
+        });
+
+        $scope.$watch('vm.addedTag', function(newVal){
+            if(newVal != '') tagsService.autofillTags(newVal);
+        });
+
+		$element[0].querySelector('.tags-input').on('blur', function () {
+			vm.addTag();
+		});
+
+		vm.addTag = function () {
+			if (vm.addedTag.length > 0) {
+				vm.tagList.push(vm.addedTag);
+				vm.tagList = vm.tagList.filter(function (item, pos) {
+					return vm.tagList.indexOf(item) == pos;
+				});
+                vm.addedTag = "";
+                vm.autofillList = [];
+			}
+		};
+
+		vm.testAddTag = function (e) {
+			if (e.keyCode == 13) {
+				e.preventDefault();
+				vm.addTag();
+			}
+		};
+
+		vm.removeTag = function (tag) {
+			vm.tagList.splice(vm.tagList.indexOf(tag), 1);
+		};
+	}
+
+	return ask;
+}
+
+
+function edit_view_def() {
+
+    var edit = {
+        templateUrl: "AJAXJellyRunner.do?template=x_nuvo_ko_ViewEdit",
+        controller: edit_ctrl,
+        controllerAs: "vm",
+        scope: true,
+        url: '/questions/{qid}/edit?aid'
+    };
+
+    function edit_ctrl($stateParams, $scope, $element, $state, questionService, createService, tagsService) {
+        var vm = this;
+        vm.aid = $stateParams.aid;
+        vm.qid = $stateParams.qid;
+        vm.type = vm.aid === undefined ? 'q' : 'a';
+        vm.noText = false;
+
+        questionService.get(vm.qid).then(function (data) {
+            if (vm.aid) {
+                if (!data) {
+                    vm.noText = true;
+                } else {
+                    data = data.answers;
+                    var answer;
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].answer_id == vm.aid) {
+                            answer = data[i];
+                            break;
+                        }
+                    }
+                    if (answer) vm.editorText = answer.answer;
+                    else vm.noText = true;
+                }
+            } else {
+                if (!data) {
+                    vm.noText = true;
+                } else {
+                    if (data.question) {
+                        vm.questionTitle = data.question;
+                        vm.tagList = data.tags;
+                        vm.editorText = data.description;
+                    } else vm.noText = true;
+                }
+            }
+        });
+
+        vm.update = function () {
+			if (vm.editorText.length < 10) alert((vm.type=='q'?'Description' : 'Answer')+" length must be at least 10 characters");
+			else if (vm.editorText.length > 5000) alert((vm.type=='q'?'Description' : 'Answer')+" length must be less than 5000 characters. Current length is " + vm.editorText.length +" characters");
+			else {
+                if(vm.type=='q'){
+                    createService.updateQuestion(vm.qid, vm.questionTitle, vm.editorText, vm.tagList)
+                    .then(function(){
+                        $state.go('question', {
+                            id: vm.qid
+                        });
+                    });
+                }else{
+                    createService.updateAnswer(vm.aid, vm.editorText)
+                    .then(function(){
+                        $state.go('question', {
+                            id: vm.qid
+                        });
+                    });
+                }
+			}
+        };
+
+
+        vm.autofillList = [];
+
+        tagsService.autoSubscribe(function(tags){
+            tags.forEach(function(tag){
+                if(vm.autofillList.indexOf(tag.name) == -1) vm.autofillList.push(tag.name);
+            });
+        });
+
+        $scope.$watch('vm.addedTag', function(newVal){
+            if(newVal != '') tagsService.autofillTags(newVal);
+        });
+
+		$element[0].querySelector('.tags-input').on('blur', function () {
+			vm.addTag();
+		});
+
+		vm.addTag = function () {
+			if (vm.addedTag.length > 0) {
+				vm.tagList.push(vm.addedTag);
+				vm.tagList = vm.tagList.filter(function (item, pos) {
+					return vm.tagList.indexOf(item) == pos;
+				});
+                vm.addedTag = "";
+                vm.autofillList = [];
+			}
+		};
+
+		vm.testAddTag = function (e) {
+			if (e.keyCode == 13) {
+				e.preventDefault();
+				vm.addTag();
+			}
+		};
+
+		vm.removeTag = function (tag) {
+			vm.tagList.splice(vm.tagList.indexOf(tag), 1);
+        };
+        
+    }
+
+    return edit;
+
+}]]></script>
+        <script_name>views</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-23 20:21:11</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>aea769cadbb2f3008fdd3df339961934</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>x_nuvo_ko.views</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_script_aea769cadbb2f3008fdd3df339961934</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-25 18:12:42</sys_updated_on>
+        <use_scoped_format>false</use_scoped_format>
+    </sys_ui_script>
+</record_update>

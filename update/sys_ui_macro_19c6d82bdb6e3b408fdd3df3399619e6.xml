@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>ViewProfile</name>
+        <scoped_name>x_nuvo_ko_ViewProfile</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 20:02:41</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>19c6d82bdb6e3b408fdd3df3399619e6</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>ViewProfile</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_macro_19c6d82bdb6e3b408fdd3df3399619e6</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-22 13:12:12</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<div class='profile-tabs wrapper-horizontal'>
+		<div class='tab-spacer' style='max-width:20px'></div>
+		<button ui-sref = 'profile({tab:"questions"})' class = 'btn' ng-class='{active: vm.tab == "questions"}'>Questions</button>
+		<button ui-sref = 'profile({tab:"answers"})' class = 'btn' ng-class='{active: vm.tab == "answers"}'>Answers</button>
+		<button ui-sref = 'profile({tab:"starred"})' class = 'btn' ng-class='{active: vm.tab == "starred"}'>Starred</button>
+		<button ui-sref = 'profile({tab:"tags"})' class = 'btn' ng-class='{active: vm.tab == "tags"}'>Watched Tags</button>
+		<div class='tab-spacer'></div>
+	</div>
+	<results></results>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>

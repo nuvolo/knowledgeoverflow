@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_nuvo_ko.VoteUtil</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>VoteUtil</name>
+        <script><![CDATA[var VoteUtil = Class.create();
+VoteUtil.prototype = {
+    initialize: function() {
+		this.table = {
+			votes: 'x_nuvo_ko_votes'
+		};
+		this.questionUtil = new x_nuvo_ko.QuestionUtil();
+    },
+	update: function(dir, id, param){
+		var value;
+		switch(dir){
+			case '-1':
+				value = -1;
+			break;
+			case '0':
+				value = 0;
+			break;
+			case '1':
+				value = 1;
+			break;
+			default:
+				return null;
+		}
+		
+		
+		var uid = gs.getUserID();
+		
+		var check = this.checkRecord(uid, id, param);
+		
+		if(check.getRowCount()==0){
+			var gr = new GlideRecord(this.table.votes);
+			gr.initialize();
+			gr.userid = uid;
+			gr.point_value = value;
+			gr[param] = id;
+			gr.insert();
+		}else{
+			check.next();
+			check.point_value = value;
+			check.update();
+		}
+		if(param=='answer') this.questionUtil.checkCommunityAnswer(id);
+		this.questionUtil.totalVotes(id,param);
+	},
+	
+	getVote: function(id, param){
+		//Function to check which way a user voted on a specific question
+		var record = this.checkRecord(gs.getUserID(), id, param);
+		if(record.getRowCount()==0) return {id:id, dir:0};
+		else{
+			record.next();
+			
+			var v = parseInt(record.getValue('point_value'));
+			if(v > 0)return {id:id, dir:1};
+			else if(v < 0) return {id:id, dir:-1};
+			else return {id:id, dir:0};
+		}
+	},
+	
+	checkRecord: function(uid, id, param){
+		var check = new GlideRecord(this.table.votes);
+		check.addQuery(param, id);
+		check.addQuery('userid', uid);
+		check.query();
+		return check;
+	},
+
+    type: 'VoteUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 20:27:58</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>fffb58ebdb6e3b408fdd3df33996192e</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>VoteUtil</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_script_include_fffb58ebdb6e3b408fdd3df33996192e</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-24 14:36:44</sys_updated_on>
+    </sys_script_include>
+</record_update>

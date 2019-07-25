@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>ViewAsk</name>
+        <scoped_name>x_nuvo_ko_ViewAsk</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 20:02:21</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>45b65ca7db6e3b408fdd3df3399619db</sys_id>
+        <sys_mod_count>17</sys_mod_count>
+        <sys_name>ViewAsk</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_macro_45b65ca7db6e3b408fdd3df3399619db</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-24 16:28:06</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<div class='post-review' ng-style='{"display" : vm.review ? "block" : "none"}'>
+		<div class='review-content center-width'>
+			<h2>Review Question</h2>
+			<hr></hr>
+			<div class='question-container wrapper-vertical' style='width:auto'>
+                        <div>
+                            <div class='title'>
+                                <h4>{{vm.newQuestionTitle}}</h4>
+                            </div>
+                            <div ng-bind-html='vm.editorText | renderHtml'></div>
+                        </div>
+                        <div>
+                            <div class='tags-container wrapper-horizontal'>
+                                <span ng-repeat='tag in vm.tagList'>
+                                    <span class='ko-tag'>
+                                        {{tag}}
+                                    </span>
+                                </span>
+                            </div>
+                            <div class='info wrapper-horizontal'>
+                                Asked by {{vm.author}} on&#160;<span ng-bind='vm.time | formatDate:true'></span>
+                            </div>
+                        </div>
+                    </div>
+			<hr></hr>
+			<div class='wrapper-horizontal'>
+				<button ng-click='vm.review = false'>Continue Editing</button>
+				<div style='flex-grow:1'></div>
+				<button ng-click='vm.postNewQuestion()'>Post Question</button>
+			</div>
+		</div>
+	</div>
+    <div>
+        <form ng-submit='vm.postNewQuestion()'>
+            <div>
+                <div class='title'>
+                    <h3>Ask a Question</h3>
+                </div>
+                <div class='title'>
+                    <h4>Title</h4>
+                    <input class='title-input' name='title' rows="15" ng-model='vm.newQuestionTitle' ng-minlength='0' minlength='10' maxlength='150' required='true'></input>
+                </div>
+
+                <div class='title'>
+                    <h4>Tags</h4>
+                </div>
+
+                <div class='tags-container tag-input wrapper-horizontal'>
+                    <span ng-repeat='tag in vm.tagList' class='ko-tag'>
+                        {{tag}} <i class="fa fa-times tag-delete" ng-click='vm.removeTag(tag)'></i>
+                    </span>
+                    <input list='tag-list' ng-keyPress='vm.testAddTag($event)' ng-model='vm.addedTag' class='tags-input'></input>
+                    <datalist id='tag-list'>
+                        <option ng-repeat='tag in vm.autofillList' value='{{tag}}'></option>
+                    </datalist>
+                </div>
+
+                <div class='title'>
+                    <h4>Description</h4>
+                </div>
+                <div class='wrapper-vertical'>
+					<editor></editor>
+                </div>
+                <div class='title'>
+                    <h3>Preview</h3>
+                </div>
+                <div class='preview question-preview wrapper-vertical'>
+
+                    <div class='question-container wrapper-vertical' style='width:auto'>
+                        <div>
+                            <div class='title'>
+                                <h4>{{vm.newQuestionTitle}}</h4>
+                            </div>
+                            <div ng-bind-html='vm.editorText | renderHtml'></div>
+                        </div>
+                        <div>
+                            <div class='tags-container wrapper-horizontal'>
+                                <span ng-repeat='tag in vm.tagList'>
+                                    <span class='ko-tag'>
+                                        {{tag}}
+                                    </span>
+                                </span>
+                            </div>
+                            <div class='info wrapper-horizontal'>
+                                Asked by {{vm.author}} on&#160;<span ng-bind='vm.time | formatDate:true'></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class='post-wrapper'>
+                    <button type='submit'>Post</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Comments" max_length="40" name="x_nuvo_ko_comments" type="collection">
+        <element label="Answer" max_length="32" name="answer" reference="x_nuvo_ko_answers" type="reference"/>
+        <element label="Comment" max_length="500" name="comment" type="string"/>
+        <element label="Commenter" max_length="32" name="commenter" reference="sys_user" type="reference"/>
+        <element label="Question" max_length="32" name="question" reference="x_nuvo_ko_questions" type="reference"/>
+        <index name="index">
+            <element name="answer"/>
+        </index>
+        <index name="index2">
+            <element name="question"/>
+        </index>
+        <index name="index3">
+            <element name="commenter"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>ViewEdit</name>
+        <scoped_name>x_nuvo_ko_ViewEdit</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-24 16:06:32</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>af07755e1b3af3004fc10f6e6e4bcb80</sys_id>
+        <sys_mod_count>18</sys_mod_count>
+        <sys_name>ViewEdit</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_macro_af07755e1b3af3004fc10f6e6e4bcb80</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-24 19:20:45</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<div ng-class='{"hide":!vm.noText}'>
+		<span>No</span>
+		<span>{{vm.type=='q'?'question':'answer'}}</span>
+		<span>was found with that id.</span>
+	</div>
+	<div ng-class='{"hide":vm.noText}'>
+<form ng-submit = 'vm.update()'>  
+<div class='wrapper-vertical'>
+	<div ng-class='{"hide":vm.type!="q"}'>
+        <div class='title'>
+            <h4>Title</h4>
+            <input class='title-input' rows="15" ng-model='vm.questionTitle' ng-minlength='0' minlength='10' maxlength='150' ng-required='{{vm.type=="q"?true:false}}'></input>
+        </div>
+
+        <div class='title'>
+            <h4>Tags</h4>
+        </div>
+
+        <div class='tags-container tag-input wrapper-horizontal'>
+            <span ng-repeat='tag in vm.tagList' class='ko-tag'>
+                {{tag}} <i class="fa fa-times tag-delete" ng-click='vm.removeTag(tag)'></i>
+            </span>
+            <input list='tag-list' ng-keyPress='vm.testAddTag($event)' ng-model='vm.addedTag'
+                class='tags-input'></input>
+            <datalist id='tag-list'>
+                <option ng-repeat='tag in vm.autofillList' value='{{tag}}'></option>
+            </datalist>
+        </div>
+
+        <div class='title'>
+            <h4>Description</h4>
+        </div>
+	</div>
+		<div class='title'  ng-class='{"hide":vm.type!="a"}'>
+            <h4>Answer</h4>
+        </div>
+        <div class='wrapper-vertical'>
+            <editor></editor>
+        </div>
+	
+	<div class='title'>
+            <h4>Preview</h4>
+        </div>
+	<div class='preview question-preview wrapper-vertical'>
+
+    <div class='question-container wrapper-vertical' style='width:auto'>
+        <div class='title' ng-class='{"hide":vm.type!="q"}'>
+            <h4>{{vm.questionTitle}}</h4>
+        </div>
+        <div ng-bind-html='vm.editorText | renderHtml'></div>
+        <div class='tags-container wrapper-horizontal' ng-class='{"hide":vm.type!="q"}'>
+            <span ng-repeat='tag in vm.tagList'>
+                <span class='ko-tag'>
+                    {{tag}}
+                </span>
+            </span>
+        </div>
+    </div>
+
+</div>
+	
+	
+	
+	
+        <div class='post-wrapper'>
+            <button type="submit">Update</button>
+        </div>
+    </div>
+</form>  
+		</div>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>Votes</name>
+        <scoped_name>x_nuvo_ko_Votes</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-24 14:01:53</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>e48a995a1bf6f3004fc10f6e6e4bcb79</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>Votes</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_macro_e48a995a1bf6f3004fc10f6e6e4bcb79</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-25 14:55:16</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<div class='vote-container wrapper-vertical'>
+            <div class='arrow'>
+                <i class="fa fa-2x fa-chevron-up vote-clickable" ng-click='vvm.vote(vvm.direction==1?0:1)'
+                    ng-class='{"vote-active": vvm.direction == 1}'></i>
+            </div>
+
+            <div style='text-align:center'>{{vvm.votes}}</div>
+
+            <div class='arrow'>
+                <i class="fa fa-2x fa-chevron-down vote-clickable" ng-click='vvm.vote(vvm.direction==-1?0:-1)'
+                    ng-class='{"vote-active": vvm.direction == -1}'></i>
+            </div>
+		
+		<div class='best-answer wrapper-vertical centered' ng-class='{"hide": vvm.type !== "answer"}'>
+	        <i class="fa fa-2x fa-check" title="The question owner accepted this as the best answer"
+	            ng-class="{hide : vvm.best_answer_type !== 'accepted' || !vvm.best_answer}"></i>
+	        <i class="fa fa-2x fa-check-circle" title="A moderator marked this as the best answer"
+	            ng-class="{hide : vvm.best_answer_type !== 'moderator' || !vvm.best_answer}"></i>
+	        <i class="fa fa-2x fa-users" title="The community has voted this as the best answer"
+	            ng-class="{hide : vvm.best_answer_type !== 'community' || !vvm.best_answer}"></i>
+
+
+	        <div class='select-answer wrapper-horizontal'>
+	            <i class="fa fa-2x fa-check" title="Accept this answer"
+	                ng-class="{hide : (vvm.best_answer_type === 'moderator' || vvm.best_answer_type === 'community' || vvm.best_answer || !vvm.question_author) }"
+	                ng-click="vvm.markBestAnswer('accepted')"></i>
+	            <i class="fa fa-2x fa-check-circle" title="Mark this as best answer as moderator"
+	                ng-class="{hide : !vvm.moderator || (vvm.best_answer_type == 'moderator' &amp;&amp; vvm.best_answer)}"
+	                ng-click="vvm.markBestAnswer('moderator')"></i>
+	        </div>
+
+
+	    </div>
+
+            <div class='star vote-clickable' ng-class='{"active": vvm.starred, "hide": vvm.type != "question"}' >
+                <i ng-click='vvm.toggleStarred()' class="fa fa-star"></i>
+            </div>
+        </div>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>
