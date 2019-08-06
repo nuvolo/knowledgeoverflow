@@ -36,9 +36,7 @@
 	var gr = new GlideRecord('x_nuvo_ko_tags');
 	gr.get(current.getValue('tag'));
 	var watchers = gr.getValue('watchers');
-	if(typeof(watchers) === 'string'){
-		watchers = watchers.split(',');
-	}
+	if(typeof(watchers) === 'string') watchers = watchers.split(',');
 	else watchers = [];
 	
 	if(op==='insert') watchers.push(uid);
@@ -58,7 +56,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>bc44f6ea1bf237004fc10f6e6e4bcb30</sys_id>
-        <sys_mod_count>25</sys_mod_count>
+        <sys_mod_count>26</sys_mod_count>
         <sys_name>Update Watchers to Tag List</sys_name>
         <sys_overrides/>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
@@ -67,7 +65,7 @@
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_script_bc44f6ea1bf237004fc10f6e6e4bcb30</sys_update_name>
         <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-25 18:03:39</sys_updated_on>
+        <sys_updated_on>2019-07-31 13:42:08</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>

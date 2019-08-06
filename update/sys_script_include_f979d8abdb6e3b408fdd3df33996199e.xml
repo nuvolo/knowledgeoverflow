@@ -9,134 +9,146 @@
         <name>SearchUtil</name>
         <script><![CDATA[var SearchUtil = Class.create();
 SearchUtil.prototype = {
-	initialize: function() {
-		this.table = {
-			question: 'x_nuvo_ko_questions',
-			answers: 'x_nuvo_ko_answers',
-			tag: 'x_nuvo_ko_tags',
+    initialize: function () {
+        this.table = {
+            question: 'x_nuvo_ko_questions',
+            answers: 'x_nuvo_ko_answers',
+            tag: 'x_nuvo_ko_tags',
             tagQuestion: 'x_nuvo_ko_m2m_tags_questions'
-		};
-		this.questionUtil = new x_nuvo_ko.QuestionUtil();
-		this.resultsPerPage = 20;
-	},
-	search: function(search_phrase, filter, page) {
-		//Weighting: In title of question: 10, in question description: 3, in answer: 2, tagged: 10
-		
-		var recs = {};
-		var gr = new GlideRecord(this.table.question);
-		gr.addQuery('IR_AND_OR_QUERY', search_phrase);
-		gr.query();
-		while(gr.next()) {
-			var qid = gr.getValue('sys_id');
-			if(!recs[qid]) recs[qid] = {
-				qid: qid,
-				rel: 0, 
-				votes: gr.getValue('votes'), 
-				answered: gr.getValue('answers') != 0,
-				time: gr.getValue('sys_created_on')
-			};
-			recs[qid].rel += gr.ir_query_score;
-		}
-		
-		gr = new GlideRecord(this.table.answers);
-		gr.addQuery('IR_AND_OR_QUERY', search_phrase);
-		gr.query();
-		while(gr.next()){
-			var rec = gr.getElement('question').getRefRecord();
-			var qid2 = rec.getValue('sys_id');
+        };
+        this.questionUtil = new x_nuvo_ko.QuestionUtil();
+        this.resultsPerPage = 20;
+    },
 
-			if(!recs[qid2]) recs[qid2] = {
-				qid: qid2,
-				rel: 0, 
-				votes: rec.getValue('votes'), 
-				answered: rec.getValue('answers') != 0,
-				time: rec.getValue('sys_created_on')
-			};
-			recs[qid2].rel += gr.ir_query_score;
-		}
-		
-		gr = new GlideRecord(this.table.tag);
-		gr.addQuery('IR_AND_OR_QUERY', search_phrase);
-		gr.query();
-		var tids = [];
-		while(gr.next()) tids.push(gr.getValue('sys_id'));
-		
-		if(tids.length > 0){
-			gr = new GlideRecord(this.table.tagQuestion);
-			var gc = gr.addQuery('tags', tids[0]);
-			for(var i = 1; i< tids.length; i++) gc.addOrCondition('tags', tids[i]);
-			gr.query();
-			while(gr.next()){
-				var el = gr.getElement('questions').getRefRecord();
-				var qid3 = el.getValue('sys_id');
-				if(!recs[qid3]) recs[qid3] = {
-					qid: qid3,
-				rel: 0, 
-				votes: el.getValue('votes'), 
-				answered: el.getValue('answers') != 0,
-				time: el.getValue('sys_created_on')
-			};
-				recs[qid3].rel += 10;
-			}
-		}
-		
-		//Convert the object with qid pair values to array for sorting
-		var arr = [];
-		for(var prop in recs) arr.push(recs[prop]);
-		
-		if(filter == 'unanswered'){
-			arr = arr.filter(function( obj ) {
-				return !obj.answered;
-			});
-		}
-		
-		//Sorting orders
-		// 	'relevance' => top => newest
-		//  'top' => newest
-		//  'unanswered' => votes => newest
-		//  'newest'
-		var results = arr.length;
-		var qids = arr.sort(function(a,b){
-			if(filter == 'relevance'){
-				if(b.rel != a.rel) return b.rel-a.rel;
-			}
-			if(filter != 'newest'){
-				if(a.votes != b.votes) return b.votes - a.votes;
-			}
-			
-			a = new GlideDateTime(a.time).getNumericValue();
-			b = new GlideDateTime(b.time).getNumericValue();
-			return b - a;
-		});
-		
-						
-		var previews = [];
-		gr = new GlideRecord(this.table.question);
-		
-		var start = (page - 1) * this.resultsPerPage;
-		var end = page * this.resultsPerPage;
-		if(end > arr.length) end = arr.length;
-		
-		for(var j = start; j < end; j++){
-			gr.get(arr[j].qid);
-			previews.push(this.questionUtil.getPreview(gr));
-		}
-		return {
-			previews: previews,
-			results:results,
-			type:'question',
-			pageSize: this.resultsPerPage
-		};
-	},
-	
-	type: 'SearchUtil'
+    /*
+    Function to search through questions, answers, and tags,
+    and then apply weights to get relevance scores returned.
+    Also paginates and enables other filtering on results
+    */
+    search: function (search_phrase, filter, page) {
+        /*
+        Weights for each occurance of word in search phrase: 
+        Title of question: 10
+        Question description: 3
+        Answer: 2
+        Questions tagged by search_phrase: 10
+
+        To adjust weights change ts_weight in table
+        */
+
+
+        //As you search through each weighting option, accumulate
+        //the weights in a records object with keys of question ID
+        var records = {};
+        var gr = new GlideRecord(this.table.question);
+        gr.addQuery('IR_AND_OR_QUERY', search_phrase);
+        gr.query();
+        while (gr.next()) {
+            var qid = gr.getValue('sys_id');
+            if (!records[qid]) records[qid] = {
+                qid: qid,
+                relevance: 0,
+                votes: gr.getValue('votes'),
+                answered: gr.getValue('answers') != 0,
+                time: gr.getValue('sys_created_on')
+            };
+            records[qid].relevance += gr.ir_query_score;
+        }
+
+        gr = new GlideRecord(this.table.answers);
+        gr.addQuery('IR_AND_OR_QUERY', search_phrase);
+        gr.query();
+        while (gr.next()) {
+            var rec = gr.getElement('question').getRefRecord();
+            var qid2 = rec.getValue('sys_id');
+
+            if (!records[qid2]) records[qid2] = {
+                qid: qid2,
+                relevance: 0,
+                votes: rec.getValue('votes'),
+                answered: rec.getValue('answers') != 0,
+                time: rec.getValue('sys_created_on')
+            };
+            records[qid2].relevance += gr.ir_query_score;
+        }
+
+        gr = new GlideRecord(this.table.tag);
+        gr.addQuery('IR_AND_OR_QUERY', search_phrase);
+        gr.query();
+        var tids = [];
+        while (gr.next()) tids.push(gr.getValue('sys_id'));
+
+        if (tids.length > 0) {
+            gr = new GlideRecord(this.table.tagQuestion);
+            var gc = gr.addQuery('tags', tids[0]);
+            for (var i = 1; i < tids.length; i++) gc.addOrCondition('tags', tids[i]);
+            gr.query();
+            while (gr.next()) {
+                var el = gr.getElement('questions').getRefRecord();
+                var qid3 = el.getValue('sys_id');
+                if (!records[qid3]) records[qid3] = {
+                    qid: qid3,
+                    relevance: 0,
+                    votes: el.getValue('votes'),
+                    answered: el.getValue('answers') != 0,
+                    time: el.getValue('sys_created_on')
+                };
+                records[qid3].relevance += 10;
+            }
+        }
+
+        //Convert the records object to array for sorting
+        var arr = [];
+        for (var prop in records) arr.push(records[prop]);
+
+        if (filter == 'unanswered') {
+            arr = arr.filter(function (obj) {
+                return !obj.answered;
+            });
+        }
+
+        //Sorting hierarchy
+        // 	'relevance' => top => newest
+        //  'top' => newest
+        //  'unanswered' => votes => newest
+        //  'newest'
+        var results = arr.length;
+        arr.sort(function (a, b) {
+            if (filter == 'relevance' && b.relevance != a.relevance) return b.relevance - a.relevance;
+            if (filter != 'newest' && a.votes != b.votes) return b.votes - a.votes;
+
+            a = new GlideDateTime(a.time).getNumericValue();
+            b = new GlideDateTime(b.time).getNumericValue();
+            return b - a;
+        });
+
+
+        //Paginate results and return
+        var previews = [];
+        gr = new GlideRecord(this.table.question);
+        var start = (page - 1) * this.resultsPerPage;
+        var end = page * this.resultsPerPage;
+        if (end > arr.length) end = arr.length;
+        for (var j = start; j < end; j++) {
+            gr.get(arr[j].qid);
+            previews.push(this.questionUtil.getPreview(gr));
+        }
+        return {
+            previews: previews,
+            results: results,
+            type: 'question',
+            pageSize: this.resultsPerPage
+        };
+    },
+
+    type: 'SearchUtil'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
         <sys_created_on>2019-07-15 20:19:50</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>f979d8abdb6e3b408fdd3df33996199e</sys_id>
-        <sys_mod_count>122</sys_mod_count>
+        <sys_mod_count>123</sys_mod_count>
         <sys_name>SearchUtil</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy>read</sys_policy>
@@ -144,6 +156,6 @@ SearchUtil.prototype = {
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_script_include_f979d8abdb6e3b408fdd3df33996199e</sys_update_name>
         <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-23 19:37:06</sys_updated_on>
+        <sys_updated_on>2019-07-31 12:51:27</sys_updated_on>
     </sys_script_include>
 </record_update>

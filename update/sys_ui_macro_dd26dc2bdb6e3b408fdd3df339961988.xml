@@ -12,49 +12,49 @@
         <sys_created_on>2019-07-15 20:00:29</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>dd26dc2bdb6e3b408fdd3df339961988</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>AnswerPreview</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_ui_macro_dd26dc2bdb6e3b408fdd3df339961988</sys_update_name>
-        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-24 15:51:36</sys_updated_on>
+        <sys_updated_by>nicholas.durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-30 19:52:25</sys_updated_on>
         <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
-	<div class='wrapper-horizontal' style='align-items:center'>
-    <div class='wrapper-vertical'>
-        <div class='question'>
-            <a ui-sref='question({id:"{{vm.question_id}}"})' class='ui-link'>
-				<h4 class='question-title'>Q: {{vm.question}}</h4>
-            </a>
-        </div>
-        <div class='wrapper-horizontal'>
-            <div ng-repeat="tag in vm.tags">
-				<tag></tag>
+    <div class='wrapper-horizontal' style='align-items:center'>
+        <div class='wrapper-vertical'>
+            <div class='question'>
+                <a ui-sref='question({id:"{{vm.question_id}}"})' class='ui-link'>
+                    <h4 class='question-title'>Q: {{vm.question}}</h4>
+                </a>
+            </div>
+            <div class='wrapper-horizontal'>
+                <div ng-repeat="tag in vm.tags">
+                    <tag></tag>
+                </div>
+            </div>
+
+            <div class='wrapper-horizontal'>
+                <div class='community-info'>
+                    <div class='info-container'>
+                        <div class='value'>{{vm.votes}}</div>
+                        <div>votes</div>
+                    </div>
+                </div>
+                <div class='wrapper-vertical' style='justify-content:center'>
+                    <div>
+                        <div ng-bind-html='vm.answer | renderHtml'></div>
+                    </div>
+                    <div>
+                        <span>You answered: </span>
+                        <span class='time' ng-bind='vm.time | formatDate'></span>
+                    </div>
+                </div>
             </div>
         </div>
-		
-		<div class='wrapper-horizontal'>
-			<div class='community-info'>
-				<div class='info-container'>
-					<div class='value'>{{vm.votes}}</div>
-					<div>votes</div>
-				</div>
-			</div>
-			<div class='wrapper-vertical' style='justify-content:center'>
-				<div>
-				<div ng-bind-html = 'vm.answer | renderHtml'></div>
-				</div>
-				<div>
-					<span>You answered: </span>
-					<span class='time' ng-bind = 'vm.time | formatDate'></span>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+    </div>
 </j:jelly>]]></xml>
     </sys_ui_macro>
 </record_update>

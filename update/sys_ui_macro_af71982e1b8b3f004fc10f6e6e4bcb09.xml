@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_macro">
+    <sys_ui_macro action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>Main</name>
+        <scoped_name>x_nuvo_ko_Main</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-08-06 13:37:07</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>af71982e1b8b3f004fc10f6e6e4bcb09</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Main</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_macro_af71982e1b8b3f004fc10f6e6e4bcb09</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-08-06 13:37:07</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<div class='wrapper-horizontal'>
+    <div class='left-sidebar'>
+        <div ui-sref-active='active' class='tab'>
+            <a ui-sref='home' class='ui-link'>
+                <div class='tab-text'>Home</div>
+            </a>
+        </div>
+        <div ui-sref-active='active' class='tab'>
+            <a ui-sref='questions' class='ui-link'>
+                <div class='tab-text'>Questions</div>
+            </a>
+        </div>
+        <div ui-sref-active='active' class='tab'>
+            <a ui-sref='tags' class='ui-link'>
+                <div class='tab-text'>Tags</div>
+            </a>
+        </div>
+        <div ui-sref-active='active' class='tab' ng-class='{"hide": !isAdmin}'>
+            <a ui-sref='admin' class='ui-link'>
+                <div class='tab-text'>Admin</div>
+            </a>
+        </div>
+    </div>
+    <div class='center-width mainbar'>
+        <ui-view></ui-view>
+    </div>
+    <div class='right-sidebar'></div>
+</div>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+</record_update>

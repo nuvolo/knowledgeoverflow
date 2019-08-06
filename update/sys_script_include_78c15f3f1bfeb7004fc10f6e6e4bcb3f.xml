@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_nuvo_ko.AdminUtil</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>AdminUtil</name>
+        <script><![CDATA[var AdminUtil = Class.create();
+AdminUtil.prototype = {
+    initialize: function () {
+        this.table = {
+            tagQuestion: 'x_nuvo_ko_m2m_tags_questions',
+            watchedTags: 'x_nuvo_ko_watched_tags',
+            tag: 'x_nuvo_ko_tags',
+            webhooks: 'x_nuvo_ko_webhooks'
+        };
+        this.tagUtil = new x_nuvo_ko.TagUtil();
+        this.resultsPerPage = 20;
+    },
+
+    getTags: function (sort, page, search) {
+        if (!this.checkAdmin()) return 'fail';
+        
+        //Search for the phrase and order
+        var gr = new GlideRecord(this.table.tag);
+        gr.addQuery('tag', 'CONTAINS', search);
+        if (sort == 'newest') gr.orderByDesc('sys_created_on');
+        else if (sort == 'number') gr.orderBy('questions');
+        var startWindow = (page - 1) * this.resultsPerPage;
+        var endWindow = page * this.resultsPerPage;
+        gr.chooseWindow(startWindow, endWindow);
+        gr.query();
+
+        //Extract desired data
+        var arr = [];
+        while (gr.next()) {
+            arr.push({
+                name: gr.getValue('tag'),
+                count: gr.getValue('questions'),
+                tid: gr.getValue('sys_id'),
+                created: gr.getValue('sys_created_on')
+            });
+        }
+
+        return {
+            data: arr,
+            results: gr.getRowCount(),
+            pageSize: this.resultsPerPage
+        };
+    },
+
+    renameTag: function (tid, newName) {
+        if (!this.checkAdmin()) return 'fail';
+        if (newName.length == 0) return 'fail';
+        var gr = new GlideRecord(this.table.tag);
+        gr.get(tid);
+        gr.tag = newName;
+        gr.update();
+        return "success";
+    },
+
+    remapTag: function (tid, mapTag) {
+        if (!this.checkAdmin()) return 'fail';
+        var mapTid = this.tagUtil.getTagId(mapTag, true);
+        if (!mapTid) return 'fail';
+
+        //Find all questions tagged with the new tag
+        var qids = [];
+        var gr = new GlideRecord(this.table.tagQuestion);
+        gr.addQuery('tags', mapTid);
+        gr.query();
+        while (gr.next()) qids.push(gr.getValue('questions'));
+        
+        //Replace the questions tagged with old tag with new tag
+        //Delete if the new tag already exists to prevent duplicates
+        gr = new GlideRecord(this.table.tagQuestion);
+        gr.addQuery('tags', tid);
+        gr.query();
+        while (gr.next()) {
+            if (qids.indexOf(gr.getValue('questions')) == -1) {
+                gr.tags = mapTid;
+                gr.update();
+            } else {
+                gr.deleteRecord();
+            }
+        }
+
+        //Update users watched tags to new tag, duplicates fine
+        gr = new GlideRecord(this.table.watchedTags);
+        gr.addQuery('tag', tid);
+        gr.query();
+        while (gr.next()) {
+            gr.tag = mapTid;
+            gr.update();
+        }
+
+        //Transfer webhooks over to new tag, duplicates fine
+        gr = new GlideRecord(this.table.webhooks);
+        gr.addQuery('watched_tags', 'CONTAINS', tid);
+        gr.query();
+        while (gr.next()) {
+            var str = gr.getValue('watched_tags').replace(tid, mapTid);
+            gr.watched_tags = str;
+        }
+
+        //Delete old tag
+        gr = new GlideRecord(this.table.tag);
+        gr.get(tid);
+        gr.deleteRecord();
+
+        return 'success';
+    },
+
+    getWebhooks: function () {
+        if (!this.checkAdmin()) return 'fail';
+        var tr = new GlideRecord(this.table.tag);
+        var gr = new GlideRecord(this.table.webhooks);
+        gr.query();
+        var hooks = [];
+        while (gr.next()) {
+            //Convert the stored tag IDs to tag names
+            var tags = [];
+            var tids = gr.getValue('watched_tags');
+            if (tids != null) {
+                tids = tids.split(',');
+                for (var i = 0; i < tids.length; i++) {
+                    tr.get(tids[i]);
+                    var tag = tr.getValue('tag');
+                    if (tag != null) tags.push(tag);
+                }
+            }
+            //And extract desired data for the webhooks
+            hooks.push({
+                channel: gr.getValue('channel_name'),
+                url: gr.getValue('url'),
+                tags: tags,
+                id: gr.getValue('sys_id')
+            });
+        }
+        return hooks;
+    },
+
+    deleteWebhook: function (hid) {
+        if (!this.checkAdmin()) return 'fail';
+        var gr = new GlideRecord(this.table.webhooks);
+        gr.get(hid);
+        gr.deleteRecord();
+        return "Webhook deleted";
+    },
+
+    updateWebhook: function (hid, channel, url, tags) {
+        if (!this.checkAdmin()) return 'fail';
+        //Convert tag names to comma seperated id list
+        if (tags == '') tags = [];
+        else tags = tags.split(',');
+        var tids = [];
+        for (var i = 0; i < tags.length; i++) tids.push(this.tagUtil.getTagId(tags[i]));
+        tids = tids.join(',');
+        //And update
+        var gr = new GlideRecord(this.table.webhooks);
+        gr.get(hid);
+        gr.channel_name = channel;
+        gr.url = url;
+        gr.watched_tags = tids;
+        gr.update();
+        return "Updated Webhook";
+    },
+
+    createWebhook: function (channel, url, tags) {
+        if (!this.checkAdmin()) return 'fail';
+        //Convert tag names to comma seperated id list
+        if (tags == '') tags = [];
+        else tags = tags.split(',');
+        var tids = [];
+        for (var i = 0; i < tags.length; i++) tids.push(this.tagUtil.getTagId(tags[i]));
+        tids = tids.join(',');
+        //And insert
+        var gr = new GlideRecord(this.table.webhooks);
+        gr.initialize();
+        gr.channel_name = channel;
+        gr.url = url;
+        gr.watched_tags = tids;
+        gr.insert();
+        return "Webhook created";
+    },
+
+    checkAdmin: function () {
+        return gs.getUser().hasRole('x_nuvo_ko.mod');
+    },
+
+    type: 'AdminUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-29 14:35:18</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>78c15f3f1bfeb7004fc10f6e6e4bcb3f</sys_id>
+        <sys_mod_count>73</sys_mod_count>
+        <sys_name>AdminUtil</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_script_include_78c15f3f1bfeb7004fc10f6e6e4bcb3f</sys_update_name>
+        <sys_updated_by>nicholas.durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-30 20:00:20</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -9,176 +9,153 @@
         <name>TagUtil</name>
         <script><![CDATA[var TagUtil = Class.create();
 TagUtil.prototype = {
-	initialize: function () {
-		this.table = {
-			tag: 'x_nuvo_ko_tags',
-			tagQuestion: 'x_nuvo_ko_m2m_tags_questions',
-			watchedTags: 'x_nuvo_ko_watched_tags',
-			question: 'x_nuvo_ko_questions'
-		};
-	},
-	
-	getTopTags: function (full) {
-		var count = new GlideAggregate(this.table.tagQuestion);
-		count.addAggregate('COUNT', 'tags');
-		count.orderByAggregate('COUNT', 'tags');
-		count.chooseWindow(1,full?20:8);
-		//Full is true for full filter page, false (no param) used for autocomplete & home page
-		count.query();
-		var data = [];
-		while(count.next()){
-			var tid = count.getValue('tags');
-			var gr = new GlideRecord(this.table.tag);
-			gr.get(tid);
-			data.push({
-				name:gr.getValue('tag'),
-				count: count.getAggregate('COUNT', 'tags')
-			});
-		}
-		
-		return data;
-	},
-	autofillTags: function (input, full) {
-		var tagList = {};
-			var gr = new GlideRecord(this.table.tag);
-			gr.addQuery('tag','CONTAINS',input);
-			gr.query();
-			while(gr.next()){
-				tagList[gr.getValue('sys_id')] = {
-					name: gr.getValue('tag'),
-					count:0
-				};
-			}
-			var keys = Object.keys(tagList);
-			
-			var ga = new GlideAggregate(this.table.tagQuestion);
-			ga.addAggregate('COUNT', 'tags');
-			ga.orderByAggregate('COUNT', 'tags');
-			if(keys.length > 0){
-				var oc = ga.addQuery('tags', keys[0]);
-				for(var i = 0; i< keys.length; i++) oc.addOrCondition('tags', keys[i]);
-					ga.query();
-				while(ga.next()){
-					tagList[ga.getValue('tags')].count = ga.getAggregate('COUNT', 'tags');
-				}
-			}
-			
-			var arr = [];
-			for(var prop in tagList) arr.push(tagList[prop]);
-				arr = arr.sort(function(a,b){
-				return b.count - a.count;
-			});
-			arr = arr.slice(0, full?20:10);
-			return arr;
-		},
-		getTagsForQuestion: function (qid) {
-			var gr = new GlideRecord(this.table.tagQuestion);
-			gr.addQuery('questions', qid);
-			gr.query();
-			var tags = [];
-			var taggr = new GlideRecord(this.table.tag);
-			while (gr.next()) {
-				taggr.get(gr.getValue('tags'));
-				tags.push(taggr.getValue('tag'));
-			}
-			return tags;
-		},
-		
-		getTagId: function (tag) {
-			var gr = new GlideRecord(this.table.tag);
-			gr.addQuery('tag', tag);
-			gr.query();
-			
-			if (gr.getRowCount() == 1) {
-				gr.next();
-				return gr.getValue('sys_id');
-			} else {
-				gr.initialize();
-				gr.tag = tag;
-				return gr.insert();
-			}
-			
-		},
-	
-		stripTags:function(qid){
-			var gr = new GlideRecord(this.table.tagQuestion);
-			gr.addQuery('questions', qid);
-			gr.deleteMultiple();
-		},
-		
-		tagQuestion: function (qid, tag) {
-			var tid = this.getTagId(tag);
-			var gr = new GlideRecord(this.table.tagQuestion);
-			gr.initialize();
-			gr.questions = qid;
-			gr.tags = tid;
-			return gr.insert();
-		},
-		
-		search: function (tag, filter, page) {
-			
-			var gr = new GlideRecord(this.table.question);
-			var grj = gr.addJoinQuery(this.table.tagQuestion);
-			
-			var tid = this.getTagId(tag);
-			grj.addCondition('tags', tid);
-			
-			return new x_nuvo_ko.QuestionUtil().paginate(gr,filter,page);
-		},
-		
-		isWatched: function (tag) {
-			var gr = new GlideRecord(this.table.watchedTags);
-			var tid = this.getTagId(tag);
-			gr.addQuery('userid', gs.getUserID());
-			gr.addQuery('tag', tid);
-			gr.query();
-			return gr.getRowCount() > 0;
-		},
-		
-		watch: function (tag, watch) {
-			var gr = new GlideRecord(this.table.watchedTags);
-			var tid = this.getTagId(tag);
-			if (watch) {
-				gr.initialize();
-				gr.userid = gs.getUserID();
-				gr.tag = tid;
-				gr.insert();
-			} else {
-				gr.addQuery('tag', tid);
-				gr.addQuery('userid', gs.getUserID());
-				gr.query();
-				while (gr.next()) {
-					gr.deleteRecord();
-				}
-			}
-		},
-		
-		getWatchedQuestions: function (filter, page) {
-			var gr = new GlideRecord(this.table.watchedTags);
-			gr.addQuery('userid', gs.getUserID());
-			gr.query();
-			if(gr.getRowCount() == 0) return {results:0, type:'question'};
-				
-				var tids = [];
-				while (gr.next()) tids.push(gr.getValue('tag'));
-					
-				
-				var gr2 = new GlideRecord(this.table.question);
-				var grj = gr2.addJoinQuery(this.table.tagQuestion);
-				if(tids.length>0) grj.addCondition('tags', tids[0]);
-					for(var i = 1; i<tids.length; i++) grj.addOrCondition('tags', tids[i]);
-					
-				return new x_nuvo_ko.QuestionUtil().paginate(gr2, filter, page);
-			},
-			
-			type: 'TagUtil'
-		};]]></script>
+    initialize: function () {
+        this.table = {
+            tag: 'x_nuvo_ko_tags',
+            tagQuestion: 'x_nuvo_ko_m2m_tags_questions',
+            watchedTags: 'x_nuvo_ko_watched_tags',
+            question: 'x_nuvo_ko_questions'
+        };
+    },
+
+    //Top tags by number of questions tagged
+    getTopTags: function (expandedResults) {
+        var gr = new GlideRecord(this.table.tag);
+        gr.orderByDesc('questions');
+        gr.chooseWindow(0, expandedResults ? 20 : 8);
+        gr.query();
+        var list = [];
+        while (gr.next()) {
+            list.push({
+                name: gr.getValue('tag'),
+                count: gr.getValue('questions')
+            });
+        }
+        return list;
+    },
+    //Take input search, find applicable tags, and sort by questions tagged
+    autofillTags: function (tagSearch, expandedResults) {
+        expandedResults = false;
+        var list = [];
+        var gr = new GlideRecord(this.table.tag);
+        gr.addQuery('tag', 'CONTAINS', tagSearch);
+        gr.orderByDesc('questions');
+        gr.chooseWindow(0, expandedResults ? 20 : 10);
+        gr.query();
+        while (gr.next()) {
+            list.push({
+                name: gr.getValue('tag'),
+                count: gr.getValue('questions')
+            });
+        }
+        return list;
+
+    },
+    getTagsForQuestion: function (qid) {
+        var gr = new GlideRecord(this.table.tagQuestion);
+        gr.addQuery('questions', qid);
+        gr.query();
+        var tags = [];
+        while (gr.next()) {
+            tags.push(gr.getElement('tags').getRefRecord().getValue('tag'));
+        }
+        return tags;
+    },
+
+    //Find tagID, create tag if does not exist
+    getTagId: function (tag, preventCreateNew) {
+        var gr = new GlideRecord(this.table.tag);
+        gr.addQuery('tag', tag);
+        gr.query();
+
+        if (gr.getRowCount() == 1) {
+            gr.next();
+            return gr.getValue('sys_id');
+        } else if (!preventCreateNew) {
+            gr.initialize();
+            gr.tag = tag;
+            return gr.insert();
+        }
+
+    },
+
+    stripTags: function (qid) {
+        var gr = new GlideRecord(this.table.tagQuestion);
+        gr.addQuery('questions', qid);
+        gr.deleteMultiple();
+    },
+
+    tagQuestion: function (qid, tag) {
+        var tid = this.getTagId(tag);
+        var gr = new GlideRecord(this.table.tagQuestion);
+        gr.initialize();
+        gr.questions = qid;
+        gr.tags = tid;
+        return gr.insert();
+    },
+
+    //Occurs when you click on a tag and it pulls all relevant results
+    search: function (tag, filter, page) {
+
+        var gr = new GlideRecord(this.table.question);
+        var grj = gr.addJoinQuery(this.table.tagQuestion);
+        grj.addCondition('tags', this.getTagId(tag));
+
+        return new x_nuvo_ko.QuestionUtil().paginate(gr, filter, page);
+    },
+
+    isWatched: function (tag) {
+        var gr = new GlideRecord(this.table.watchedTags);
+        gr.addQuery('userid', gs.getUserID());
+        gr.addQuery('tag', this.getTagId(tag));
+        gr.query();
+        return gr.getRowCount() > 0;
+    },
+
+    toggleWatch: function (tag, watch) {
+        var gr = new GlideRecord(this.table.watchedTags);
+        var tid = this.getTagId(tag);
+        if (watch) {
+            gr.initialize();
+            gr.userid = gs.getUserID();
+            gr.tag = tid;
+            gr.insert();
+        } else {
+            gr.addQuery('tag', tid);
+            gr.addQuery('userid', gs.getUserID());
+            gr.query();
+            while (gr.next()) gr.deleteRecord();
+        }
+    },
+
+    getWatchedQuestions: function (filter, page) {
+        var gr = new GlideRecord(this.table.watchedTags);
+        gr.addQuery('userid', gs.getUserID());
+        gr.query();
+        if (gr.getRowCount() == 0) return {
+            results: 0,
+            type: 'question'
+        };
+
+        var tids = [];
+        while (gr.next()) tids.push(gr.getValue('tag'));
+
+        var gr2 = new GlideRecord(this.table.question);
+        var grj = gr2.addJoinQuery(this.table.tagQuestion);
+        if (tids.length > 0) grj.addCondition('tags', tids[0]);
+        for (var i = 1; i < tids.length; i++) grj.addOrCondition('tags', tids[i]);
+
+        return new x_nuvo_ko.QuestionUtil().paginate(gr2, filter, page);
+    },
+
+    type: 'TagUtil'
+};]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
         <sys_created_on>2019-07-15 20:25:07</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>4cda14abdb6e3b408fdd3df3399619a5</sys_id>
-        <sys_mod_count>84</sys_mod_count>
+        <sys_mod_count>108</sys_mod_count>
         <sys_name>TagUtil</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy>read</sys_policy>
@@ -186,6 +163,6 @@ TagUtil.prototype = {
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_script_include_4cda14abdb6e3b408fdd3df3399619a5</sys_update_name>
         <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-24 19:10:40</sys_updated_on>
+        <sys_updated_on>2019-07-31 13:39:26</sys_updated_on>
     </sys_script_include>
 </record_update>

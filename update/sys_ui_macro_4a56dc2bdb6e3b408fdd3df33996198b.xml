@@ -12,15 +12,15 @@
         <sys_created_on>2019-07-15 20:00:47</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>4a56dc2bdb6e3b408fdd3df33996198b</sys_id>
-        <sys_mod_count>15</sys_mod_count>
+        <sys_mod_count>65</sys_mod_count>
         <sys_name>Banner</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_ui_macro_4a56dc2bdb6e3b408fdd3df33996198b</sys_update_name>
-        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-25 14:40:18</sys_updated_on>
+        <sys_updated_by>nicholas.durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-08-06 15:04:50</sys_updated_on>
         <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
 	<div class='mobile-menu' ng-class='{"hide":!mobile.menu}' ng-click='mobile.menu = false'>
@@ -55,14 +55,30 @@
 			<button ng-click='mobile.menu = mobile.menu == true? false:true'><i class="fa fa-bars"></i></button>
 		</div>
 		<div class='side-button mobile-hide'>
-			<button ui-sref="home"><i class="fa fa-2x fa-home"></i></button>
+			<button ui-sref="home"><i class="fa fa-lg fa-home"></i></button>
+			<button ui-sref="ask" style='height:30px;'> <i class="fa fa-plus-square"></i> Ask a Question</button>
 		</div>
 		<div class='center-width wrapper-horizontal centered search-container'>
 			<search class='search'></search>
 		</div>
 		<div class='side-button mobile-hide'>
-			<button ui-sref="ask" style='height:30px;'> <i class="fa fa-plus-square"></i> Ask a Question</button>
+			<span style='flex-grow:1'></span>
 			<button ui-sref="profile" style='border-radius:50%; height:35px; width:35px;'>{{vm.initials}}</button>
+			<i class="fa fa-bell menu-btn" style='font-size:1.7em' ng-click='vm.openNotifications()' id='notification-bell'>
+				<div class='notifications-num' ng-show='vm.unread&gt;0'>{{vm.unread}}</div>
+				<div class='notifications-container' ng-click="$event.stopPropagation()" ng-show='vm.showNotifications'>
+					<div class='ko-notification' ng-class='{"unread": !notification.read}' ng-click='vm.clickNotification($event, notification.qid)' ng-repeat="notification in vm.notifications">
+							<div class='notification-title'>{{notification.title}}</div>
+							<div class='notification-content'>{{notification.question}}</div>
+						    <div class='notification-time' ng-bind-html = 'notification.time | formatDate'></div>
+
+							<div class='delete' ng-click ='vm.deleteNotification(notification.id)'>
+								<i class="fa fa-times"></i>
+							</div>
+					</div>
+				</div>
+			</i>
+			<span style='width:20px'></span>
 		</div>
 	</div>
 </j:jelly>]]></xml>

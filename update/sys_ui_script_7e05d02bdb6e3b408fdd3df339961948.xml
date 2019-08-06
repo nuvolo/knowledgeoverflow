@@ -6,109 +6,77 @@
         <global>false</global>
         <name>x_nuvo_ko.directives</name>
         <script><![CDATA[function tag_def() {
-    var tag = {
+    return {
         templateUrl: 'AJAXJellyRunner.do?template=x_nuvo_ko_Tag'
     };
-    return tag;
+}
+
+function main_def(){
+	return {
+        templateUrl: 'AJAXJellyRunner.do?template=x_nuvo_ko_Main'
+    };
 }
 
 function votes_def() {
     var votes = {
         controller: votes_ctrl,
-		controllerAs: 'vvm',
+        controllerAs: 'vvm',
         scope: false,
         templateUrl: 'AJAXJellyRunner.do?template=x_nuvo_ko_Votes'
     };
 
     function votes_ctrl($scope, voteService, questionService) {
         var vvm = this;
-		for (var param in $scope.vm) vvm[param] = $scope.vm[param];
+        //Data
+        for (var param in $scope.vm) vvm[param] = $scope.vm[param];
         vvm.type = vvm.answer_id ? 'answer' : 'question';
         var id = (vvm.type === 'question' ? vvm.question_id : vvm.answer_id);
-		
-		questionService.subscribe(function(data){
-			if(data && data.question_id == id){
-				vvm.votes = data.votes;
-				vvm.starred = data.starred;
-			}
-		});
 
-		vvm.vote = function (dir) {
+        //On question update
+        questionService.subscribe(function (data) {
+            if (data && data.question_id == id) {
+                vvm.votes = data.votes;
+                vvm.starred = data.starred;
+            }
+        });
+
+        //Vote in some direction
+        vvm.vote = function (dir) {
             vvm.votes += (dir - vvm.direction);
             vvm.direction = dir;
             voteService.vote(dir, id, vvm.type);
         };
 
+        //Handle vote changes
         voteService.get(id, vvm.type);
         voteService.subscribe(function (data) {
             if (data.id === id) vvm.direction = data.dir;
         });
 
         if (vvm.type == 'question') {
+            //Handle Star clicked
             vvm.toggleStarred = function () {
                 vvm.starred = !vvm.starred;
                 questionService.toggleStarred(vvm.starred, id);
             };
         } else {
+            //Handle best answer marking
+            var parent = $scope.$parent.vm;
             vvm.markBestAnswer = function (type) {
-                questionService.markBestAnswer($scope.$parent.vm.question_id, vvm.answer_id, type).then(function () {
-                    questionService.get($scope.$parent.vm.question_id);
+                questionService.markBestAnswer(parent.question_id, vvm.answer_id, type).then(function () {
+                    questionService.get(parent.question_id);
                 });
             };
-            vvm.moderator = g_user.hasRoleExactly('x_nuvo_ko.mod');
-
-            vvm.best_answer = $scope.$parent.vm.best_answer === vvm.answer_id;
-            vvm.best_answer_type = $scope.$parent.vm.best_answer_type;
-            vvm.question_author = $scope.$parent.vm.author == g_user.getFullName();
+            vvm.best_answer = parent.best_answer === vvm.answer_id;
+            vvm.best_answer_type = parent.best_answer_type;
+            vvm.question_author = parent.author == g_user.getFullName();
         }
     }
 
     return votes;
 }
 
-function editor_def(){
-    var editor = {
-        templateUrl:"AJAXJellyRunner.do?template=x_nuvo_ko_Editor",
-        controller: editor_ctrl,
-        scope:false,
-    };
 
-    function editor_ctrl($scope, $element){
-        var vm = $scope.vm;
-        vm.editorText = "";
-        var mde = new SimpleMDE({
-            element: $element[0].querySelector('.editor'),
-            parsingConfig: {
-                allowAtxHeaderWithoutSpace: false,
-                strikethrough: false
-            },
-            renderingConfig: {
-                singleLineBreaks: true,
-                codeSyntaxHighlighting: true
-            },
-            toolbar: ["bold", "italic", "strikethrough", "|", "heading-1", "heading-2", "|", "code", "quote", "|", "link", "image", "table", "horizontal-rule", "|", "guide"],
-            shortcuts: {
-                "toggleSideBySide": null,
-                "toggleFullScreen": null,
-                "togglePreview": null
-            },
-			spellChecker: false,
-            status: false,
-            forceSync: true
-        });
-        
-        mde.codemirror.on("change", function () {
-            vm.editorText = mde.value();
-            if(!$scope.$$phase) $scope.$apply();
-        });
-
-        $scope.$watch('vm.editorText', function(newVal){
-            if(newVal=="" || mde.value() =="")mde.value(newVal);
-        });
-    }
-
-    return editor;
-}
 
 function comments_def() {
     var comments = {
@@ -120,31 +88,32 @@ function comments_def() {
 
     function comments_ctrl($scope, questionService, createService) {
         var cvm = this;
+        //Options
+        cvm.expand = false;
+        cvm.minifiedResults = 4;
+        cvm.commenting = false;
+        cvm.commentText = "";
+        //Data
         cvm.comments = $scope.vm.comments;
         cvm.type = $scope.vm.answer_id ? 'answer' : 'question';
         cvm.id = (cvm.type === 'question' ? $scope.vm.question_id : $scope.vm.answer_id);
 
-        if(cvm.type === 'question') questionService.subscribe(function(d){
-			if(d){
-            cvm.comments = d.comments;
-            cvm.commenting = false;
-            cvm.commentText = "";
-			}
+        //On Question update
+        if (cvm.type === 'question') questionService.subscribe(function (data) {
+            if (data) {
+                cvm.comments = data.comments;
+                cvm.commenting = false;
+                cvm.commentText = "";
+            }
         });
 
-        cvm.commenting = false;
-        cvm.commentText = "";
-
+        //Create comment then update the question
         cvm.postComment = function () {
             createService.createComment(cvm.type, cvm.id, cvm.commentText).then(function () {
-                if(cvm.type=='answer') questionService.get($scope.$parent.vm.question_id);
+                if (cvm.type == 'answer') questionService.get($scope.$parent.vm.question_id);
                 else questionService.get(cvm.id);
             });
         };
-
-
-        cvm.expand = false;
-        cvm.minifiedResults = 4;
     }
 
     return comments;
@@ -159,10 +128,11 @@ function answer_def() {
         scope: false
     };
 
-    function answer_ctrl($scope, createService, questionService) {
+    function answer_ctrl($scope) {
+        //Extract answer data and question ID from parent question
         var vm = this;
         for (var param in $scope.answer) vm[param] = $scope.answer[param];
-		vm.question_id = $scope.$parent.vm.question_id;
+        vm.question_id = $scope.$parent.vm.question_id;
     }
 
     return answer;
@@ -208,9 +178,50 @@ function banner_def() {
         controllerAs: 'vm'
     };
 
-    function banner_ctrl() {
+    function banner_ctrl($scope, $state, notificationService) {
         var vm = this;
         vm.initials = g_user.firstName.slice(0, 1) + g_user.lastName.slice(0, 1);
+        vm.unread = 0;
+        vm.showNotifications = false;
+
+        vm.clickNotification = function (event, id) {
+            if (!event.target.parentNode.classList.contains('delete')) {
+                vm.showNotifications = false;
+                $state.go('question', {
+                    id: id
+                });
+            }
+        };
+
+        notificationService.get().then(function (data) {
+            vm.unread = 0;
+            data.forEach(function (notification) {
+                if (!notification.read) vm.unread++;
+            });
+            vm.notifications = data;
+        });
+
+        vm.deleteNotification = function (id) {
+            for (var i = 0; i < vm.notifications.length; i++) {
+                notificationService.remove(id);
+                if(vm.notifications[i].id == id) vm.notifications.splice(i,1);
+            }
+        };
+
+        vm.openNotifications = function () {
+            vm.showNotifications = !vm.showNotifications;
+            if (vm.unread > 0) {
+                notificationService.markRead();
+                vm.unread = 0;
+            }
+        };
+
+        window.onclick = function (event) {
+            if (vm.showNotifications && event.srcElement.id != 'notification-bell') {
+                vm.showNotifications = false;
+                $scope.$apply();
+            }
+        };
     }
 
     return banner;
@@ -249,16 +260,17 @@ function results_def() {
 
     function results_ctrl($stateParams, $scope, resultsService) {
         var vm = this;
-        vm.filter = $stateParams.filter;
-
-        vm.page = 1;
-
+        /*
+        When using this results directive, method must be set in parent directive/view
+        Method defines function to use when querying search results, params defines any additional
+        data you wish to pass to the query
+        */
         vm.method = $scope.$parent.vm.resultsMethod;
-        if (vm.filter === undefined) {
-            vm.filter = vm.method == 'search' ? 'relevance' : 'newest';
-        }
-        vm.params = $scope.$parent.vm.params;
-        if (vm.params == undefined) vm.params = {};
+        vm.params = $scope.$parent.vm.params || {};
+
+
+        vm.filter = $stateParams.filter || (vm.method == 'search' ? 'relevance' : 'newest');
+        vm.page = 1;
 
         vm.update = function () {
             resultsService.query(vm.method, vm.filter, vm.page, vm.params)
@@ -283,14 +295,104 @@ function results_def() {
     }
 
     return results;
-}]]></script>
+}
+
+
+function editor_def() {
+    var editor = {
+        templateUrl: "AJAXJellyRunner.do?template=x_nuvo_ko_Editor",
+        controller: editor_ctrl,
+        scope: false,
+        controllerAs: 'evm'
+    };
+
+    function editor_ctrl($scope, $element, attachmentService) {
+        var evm = this;
+        evm.uploadFiles = function (files) {
+            for (var i = 0; i < files.length; i++) {
+                attachmentService.upload(files.item(i)).then(insertLink);
+            }
+
+            function insertLink(data) {
+                mde.value(mde.value() + '[' + data.name + '](' + data.link + ') ');
+            }
+        };
+
+        evm.selectFiles = function () {
+            document.querySelector(".input-file").click();
+        };
+        $scope.vm.editorText = "";
+        //Configured drop-in editor from simplemde markdown editor
+        var mde = new SimpleMDE({
+            element: $element[0].querySelector('.editor'),
+            parsingConfig: {
+                allowAtxHeaderWithoutSpace: false,
+                strikethrough: false
+            },
+            renderingConfig: {
+                singleLineBreaks: true,
+                codeSyntaxHighlighting: true
+            },
+            toolbar: ["bold", "italic", "strikethrough", "|", "heading-1", "heading-2", "|", "code", "quote", "|", "table", "horizontal-rule", "|", "link", "image", {
+                name: "upload",
+                action: evm.selectFiles,
+                className: "fas fa-file-upload",
+                title: "Attach Files"
+            }, "|", "guide"],
+            shortcuts: {
+                "toggleSideBySide": null,
+                "toggleFullScreen": null,
+                "togglePreview": null
+            },
+            spellChecker: false,
+            status: false,
+            forceSync: true
+        });
+
+        //Force update on the model when typing into the editor
+        mde.codemirror.on("change", function () {
+            $scope.vm.editorText = mde.value();
+            if (!$scope.$$phase) $scope.$apply();
+        });
+
+        //Handling copy paste of attachments
+        mde.codemirror.on("paste", function (el, event) {
+            var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+
+            for (var index in items) {
+                var item = items[index];
+                if (item.kind === 'file') {
+                    event.preventDefault();
+                    var blob = item.getAsFile();
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        console.log("success");
+                        var encoded_url = event.target.result;
+                        attachmentService.uploadImage(encoded_url).then(function (url) {
+                            mde.value(mde.value() + '![](' + url + ')');
+                        });
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            }
+        });
+
+        //Allow programatic insertion of text into the editor
+        $scope.$watch('$scope.vm.editorText', function (newVal) {
+            if (newVal == "" || mde.value() == "") mde.value(newVal);
+        });
+    }
+
+    return editor;
+}
+]]></script>
         <script_name>directives</script_name>
         <sys_class_name>sys_ui_script</sys_class_name>
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
         <sys_created_on>2019-07-15 19:55:23</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>7e05d02bdb6e3b408fdd3df339961948</sys_id>
-        <sys_mod_count>138</sys_mod_count>
+        <sys_mod_count>156</sys_mod_count>
         <sys_name>x_nuvo_ko.directives</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
@@ -298,7 +400,7 @@ function results_def() {
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_ui_script_7e05d02bdb6e3b408fdd3df339961948</sys_update_name>
         <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-25 19:21:22</sys_updated_on>
+        <sys_updated_on>2019-08-06 13:37:39</sys_updated_on>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>

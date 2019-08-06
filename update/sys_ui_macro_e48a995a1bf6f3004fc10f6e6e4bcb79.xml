@@ -12,7 +12,7 @@
         <sys_created_on>2019-07-24 14:01:53</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>e48a995a1bf6f3004fc10f6e6e4bcb79</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>Votes</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
@@ -20,7 +20,7 @@
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_ui_macro_e48a995a1bf6f3004fc10f6e6e4bcb79</sys_update_name>
         <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-25 14:55:16</sys_updated_on>
+        <sys_updated_on>2019-07-29 16:57:47</sys_updated_on>
         <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
 	<div class='vote-container wrapper-vertical'>
@@ -50,7 +50,7 @@
 	                ng-class="{hide : (vvm.best_answer_type === 'moderator' || vvm.best_answer_type === 'community' || vvm.best_answer || !vvm.question_author) }"
 	                ng-click="vvm.markBestAnswer('accepted')"></i>
 	            <i class="fa fa-2x fa-check-circle" title="Mark this as best answer as moderator"
-	                ng-class="{hide : !vvm.moderator || (vvm.best_answer_type == 'moderator' &amp;&amp; vvm.best_answer)}"
+	                ng-class="{hide : !isAdmin || (vvm.best_answer_type == 'moderator' &amp;&amp; vvm.best_answer)}"
 	                ng-click="vvm.markBestAnswer('moderator')"></i>
 	        </div>
 

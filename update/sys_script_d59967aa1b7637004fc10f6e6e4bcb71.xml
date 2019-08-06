@@ -7,7 +7,7 @@
         <action_insert>true</action_insert>
         <action_query>false</action_query>
         <action_update>false</action_update>
-        <active>true</active>
+        <active>false</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
         <change_fields>false</change_fields>
@@ -28,17 +28,23 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
-	
-	var question = current;
-    var title = question.getValue('question');
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/ ) {
+
+    var question = current;
+
+    var question_url = gs.getProperty('glide.servlet.uri') + 'x_nuvo_ko_portal.do#!/questions/' + question.getValue('sys_id');
+    var asker = question.getElement('asker').getRefRecord().getValue('name');
+    var question_title = question.getValue('question');
     var description = question.getValue('description');
+    //Format block code because MS Teams doesnt like triple ticks ```
+    //Replace every other with respective opening or closing tag
     description = description.split('```').reduce(function (a, b, i) {
         return a + (i % 2 ? '<pre>' : '</pre>') + b;
     });
-    var question_url = 'https://nuvolodev.service-now.com/x_nuvo_ko_portal.do#!/questions/' + question.getValue('sys_id');
-    var asker = question.getElement('asker').getRefRecord().getValue('name');
-    var data = {
+
+
+    //MS Teams connectors are finicky, adjust with care
+    var connector = {
         "@context": "https://schema.org/extensions",
         "@type": "MessageCard",
         "potentialAction": [{
@@ -46,11 +52,11 @@
             "name": "Answer This Question",
             "targets": [{
                 "os": "default",
-                "uri": question_url
+                "uri": "question_url"
             }]
         }],
         "sections": [{
-                "text": '**' + title + '**'
+                "text": '**' + "question_title" + '**'
             },
             {
                 "text": description
@@ -58,40 +64,40 @@
             {
                 "facts": [{
                     "name": "Asked By:",
-                    "value": asker
+                    "value": "asker"
                 }]
             }
         ],
         "summary": "Question Posted",
         "title": "New Question Asked"
     };
-	
-	
-	var tids = [];
-	var tr = new GlideRecord('x_nuvo_ko_m2m_tags_questions');
-	tr.addQuery('questions', current.getValue('sys_id'));
-	tr.query();
-	while(tr.next()) tids.push(tr.getValue('tags'));
-	
-	
-	var gr = new GlideRecord('x_nuvo_ko_webhooks');
-	var gj = gr.addQuery('channel_name', 'general');
-	if(tids.length>0){
-		for(var i = 0; i<tids.length; i++){
-			gj.addOrCondition('watched_tags', 'CONTAINS', tids[i]);
-		}
-		
-	}
-	gr.query();
-	while(gr.next()){
-		var request = new sn_ws.RESTMessageV2();
-		request.setHttpMethod('post');
-		request.setEndpoint(gr.getValue('url'));
-		request.setRequestBody(JSON.stringify(data));
-		request.setRequestHeader("Content-Type", "Application/json");
-		request.execute();
-	}
-		
+
+
+    //Find the questions tags, find webhooks watching that tag, send the connector to relevant webhooks
+    var tids = [];
+    var tr = new GlideRecord('x_nuvo_ko_m2m_tags_questions');
+    tr.addQuery('questions', current.getValue('sys_id'));
+    tr.query();
+    while (tr.next()) tids.push(tr.getValue('tags'));
+    var gr = new GlideRecord('x_nuvo_ko_webhooks');
+    var gj = gr.addQuery('channel_name', 'general');
+    if (tids.length > 0) {
+        for (var i = 0; i < tids.length; i++) {
+            gj.addOrCondition('watched_tags', 'CONTAINS', tids[i]);
+        }
+
+    }
+    gr.query();
+    while (gr.next()) {
+        var request = new sn_ws.RESTMessageV2();
+        request.setHttpMethod('post');
+        request.setEndpoint(gr.getValue('url'));
+        request.setRequestBody(JSON.stringify(connector));
+        request.setRequestHeader("Content-Type", "Application/json");
+        var response = request.execute();
+		gs.info("ND " + response.getBody());
+    }
+
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
@@ -100,7 +106,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>d59967aa1b7637004fc10f6e6e4bcb71</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>18</sys_mod_count>
         <sys_name>Send Webhooks on New Question</sys_name>
         <sys_overrides/>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
@@ -108,8 +114,8 @@
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_script_d59967aa1b7637004fc10f6e6e4bcb71</sys_update_name>
-        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-25 19:58:41</sys_updated_on>
+        <sys_updated_by>nicholas.durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-08-05 19:02:06</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

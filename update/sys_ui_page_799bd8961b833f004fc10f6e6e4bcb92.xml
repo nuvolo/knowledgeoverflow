@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_nuvo_ko_portal_copy.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+
+    <!--Angular scripts-->
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-sanitize.js'></script>
+    <script src="//unpkg.com/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
+
+    <!--Font awesome icons-->
+    <script src="https://kit.fontawesome.com/e802dedb5b.js"></script>
+
+
+    <!-- Editor and markdown scripts-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
+    <link rel='stylesheet' type='text/css' href='e5078d46db72f3008fdd3df339961971.cssdbx'>
+    </link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.7.0/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css">
+    </link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="4285182bdb6e3b408fdd3df3399619d0.cssdbx">
+    </link>
+    <link rel='stylesheet' type='text/css' href='e25daea61bf237004fc10f6e6e4bcbc1.cssdbx'>
+    </link>
+
+    <script src='x_nuvo_ko.services.jsdbx'></script>
+    <script src='x_nuvo_ko.directives.jsdbx'></script>
+    <script src='x_nuvo_ko.views.jsdbx'></script>
+    <script src='x_nuvo_ko.router.jsdbx'></script>
+
+    <div ng-app="kmapp">
+        <banner></banner>
+		<main></main>
+    </div>
+
+</j:jelly>]]></html>
+        <name>portal_copy</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>nicholas.durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-08-05 19:43:25</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>799bd8961b833f004fc10f6e6e4bcb92</sys_id>
+        <sys_mod_count>17</sys_mod_count>
+        <sys_name>portal_copy</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_ui_page_799bd8961b833f004fc10f6e6e4bcb92</sys_update_name>
+        <sys_updated_by>nicholas.durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-08-06 16:54:49</sys_updated_on>
+    </sys_ui_page>
+</record_update>

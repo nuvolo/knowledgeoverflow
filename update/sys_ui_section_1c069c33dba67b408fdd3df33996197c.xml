@@ -29,6 +29,20 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>questions</element>
+            <position>2</position>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-29 15:13:37</sys_created_on>
+            <sys_id>d2ea97b31b32f7004fc10f6e6e4bcb98</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_nuvo_ko_tags" sys_domain="global" view="Default view">1c069c33dba67b408fdd3df33996197c</sys_ui_section>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-29 15:13:37</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

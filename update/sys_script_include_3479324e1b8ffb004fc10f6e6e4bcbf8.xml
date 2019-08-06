@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_nuvo_ko.NotificationUtil</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>NotificationUtil</name>
+        <script><![CDATA[var NotificationUtil = Class.create();
+NotificationUtil.prototype = {
+    initialize: function() {
+		this.notificationTable = 'x_nuvo_ko_notifications';
+    },
+	
+	get: function(){
+		var gr = new GlideRecord(this.notificationTable);
+		gr.addQuery('user', gs.getUserID());
+		gr.orderByDesc('sys_created_on');
+		gr.query();
+		
+		var notifications = [];
+		while(gr.next()){
+			notifications.push({
+				id: gr.getValue('sys_id'),
+				qid: gr.getValue('question'),
+				read: gr.getValue('seen') == '0' ? false : true,
+				title: gr.getValue('title'),
+				question: gr.getElement('question').getRefRecord().getValue('question'),
+				time: gr.getValue('sys_created_on')
+			});
+		}
+		return notifications;
+	},
+	
+	markRead: function(){
+		var gr = new GlideRecord(this.notificationTable);
+		gr.addQuery('user', gs.getUserID());
+		gr.addQuery('seen', false);
+		gr.query();
+		gr.setValue('seen', true);
+		gr.updateMultiple();
+	},
+	remove: function(id){
+		var gr = new GlideRecord(this.notificationTable);
+		gr.get(id);
+		gr.deleteRecord();
+	},
+    type: 'NotificationUtil'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-08-05 12:41:12</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>3479324e1b8ffb004fc10f6e6e4bcbf8</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>NotificationUtil</sys_name>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_script_include_3479324e1b8ffb004fc10f6e6e4bcbf8</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-08-06 14:45:43</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Notifications" max_length="40" name="x_nuvo_ko_notifications" type="collection">
+        <element label="HTML" max_length="6000" name="html" type="string"/>
+        <element label="Question" max_length="32" name="question" reference="x_nuvo_ko_questions" type="reference"/>
+        <element default="False" label="Seen" max_length="40" name="seen" type="boolean"/>
+        <element label="Title" max_length="200" name="title" type="string"/>
+        <element label="User" max_length="32" name="user" reference="sys_user" type="reference"/>
+        <index name="index">
+            <element name="question"/>
+        </index>
+        <index name="index2">
+            <element name="user"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_nuvo_ko_comments</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Create Comment Notifications</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	
+	var type = current.getValue('question') == null ? 'answer' : 'question';
+	var parent =
+		type == 'question' ?
+		current.question.getRefRecord():
+		current.answer.getRefRecord();
+	var question = type == 'question' ? parent: parent.question.getRefRecord();
+    var author = current.commenter.getRefRecord().getValue('name');
+	var comment = current.getValue('comment');
+    var url = gs.getProperty('glide.servlet.uri') + 'x_nuvo_ko_portal.do#!/questions/' + question.getValue('sys_id');
+    var parentAuthor = parent.getElement(type=='question' ? 'asker' : 'poster');
+    
+    //Send to question/answer owner
+	var gr = new GlideRecord('x_nuvo_ko_notifications');
+	if(current.commenter.getRefRecord().getValue('sys_id') != parentAuthor.getRefRecord().getValue('sys_id')){
+		gr.initialize();
+		gr.user = parentAuthor;
+		gr.question = question.getValue('sys_id');
+		var insert = type=='answer'?'answer to the ':'';
+		gr.html = '<p>Your ' + insert +'question <strong><a href='+url+'>' + question.getValue('question') +'</a></strong> has a new comment:</p><p>Author: '+author +'</p><p>Comment: '+comment+'</p>';
+		gr.title = 'New Comment Posted to Your ' + (type=='answer'? 'Answer':'Question');
+		gr.insert();
+	}
+
+	//Send notification to everyone else in the chain who is not the author
+    var commenters = parent.getValue('commenters').split(',');
+	for(var i = 0; i<commenters.length; i++){
+		if(commenters[i] != parentAuthor.getRefRecord().getValue('sys_id') && commenters[i] != current.commenter.getRefRecord().getValue('sys_id')){
+			gr.initialize();
+			gr.user = commenters[i];
+			gr.question = question.getValue('sys_id');
+			gr.title = 'Comment Chain Has New Reply';
+			gr.html = "<p>A comment has been posted under the original question <strong><a href= '" + url + "'>" + question.getValue('question') + "</a></strong></p><p><p>Author: "+author +"</p><p>Comment: "+comment+"</p>";
+			gr.insert();
+		}
+	}
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>nicholas.durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-31 19:20:54</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>3576aee81b4b3b004fc10f6e6e4bcbd9</sys_id>
+        <sys_mod_count>39</sys_mod_count>
+        <sys_name>Create Comment Notifications</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+        <sys_update_name>sys_script_3576aee81b4b3b004fc10f6e6e4bcbd9</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-08-05 13:06:01</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=3576aee81b4b3b004fc10f6e6e4bcbd9"/>
+</record_update>

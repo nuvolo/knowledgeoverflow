@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="x_nuvo_ko_webhooks" version="2" view="sys_ref_list">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>sys_id</element>
+            <list_id display_value="x_nuvo_ko_webhooks" element="NULL" name="x_nuvo_ko_webhooks" parent="NULL" relationship="NULL" sys_domain="global" view="5ff333300f910200eeac5d78a1050ef7">e3a6f5e41bc73b004fc10f6e6e4bcb58</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-31 15:51:09</sys_created_on>
+            <sys_id>67a6b92c1bc73b004fc10f6e6e4bcb92</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-31 15:51:09</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>x_nuvo_ko_webhooks</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+            <sys_created_on>2019-07-31 15:51:09</sys_created_on>
+            <sys_customer_update>false</sys_customer_update>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>e3a6f5e41bc73b004fc10f6e6e4bcb58</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_nuvo_ko_webhooks</sys_name>
+            <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
+            <sys_update_name>sys_ui_list_x_nuvo_ko_webhooks_sys_ref_list</sys_update_name>
+            <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+            <sys_updated_on>2019-07-31 15:51:09</sys_updated_on>
+            <sys_user/>
+            <view display_value="Reference List" name="sys_ref_list">5ff333300f910200eeac5d78a1050ef7</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

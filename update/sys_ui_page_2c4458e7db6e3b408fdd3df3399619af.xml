@@ -11,58 +11,38 @@ document.getElementsByTagName('head')[0].appendChild(meta);]]></client_script>
         <endpoint>x_nuvo_ko_portal.do</endpoint>
         <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
-	
-<!--Angular scripts-->
-<script src = 'https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.js'></script>
-	<script src = 'https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-sanitize.js'></script>
-	<script src="//unpkg.com/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
-	
-	<!--Font awesome icons-->
-	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>
-	
-<!-- Editor and markdown scripts-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
-	<link rel='stylesheet' type='text/css' href = 'e5078d46db72f3008fdd3df339961971.cssdbx'></link>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.7.0/marked.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css"></link>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
-	
-	
-	<link rel="stylesheet" type="text/css" href="4285182bdb6e3b408fdd3df3399619d0.cssdbx"></link>
-	<link rel='stylesheet' type='text/css' href = 'e25daea61bf237004fc10f6e6e4bcbc1.cssdbx'></link>
 
-	<script src = 'x_nuvo_ko.services.jsdbx'></script>
-	<script src = 'x_nuvo_ko.directives.jsdbx'></script>
-	<script src = 'x_nuvo_ko.views.jsdbx'></script>
-	<script src = 'x_nuvo_ko.router.jsdbx'></script>
+	<!--Angular scripts-->
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-sanitize.js'></script>
+    <script src="//unpkg.com/@uirouter/angularjs/release/angular-ui-router.min.js"></script>
+
+    <!--Font awesome icons-->
+    <script src="https://kit.fontawesome.com/e802dedb5b.js"></script>
+
+
+    <!-- Editor and markdown scripts-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
+    <link rel='stylesheet' type='text/css' href='e5078d46db72f3008fdd3df339961971.cssdbx'>
+    </link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.7.0/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.css">
+    </link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplemde/1.11.2/simplemde.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="4285182bdb6e3b408fdd3df3399619d0.cssdbx">
+    </link>
+    <link rel='stylesheet' type='text/css' href='e25daea61bf237004fc10f6e6e4bcbc1.cssdbx'>
+    </link>
 	
-	<div ng-app="kmapp">
+    <div ng-app="kmapp" style='height:100%'>
 		<banner></banner>
-		<div class='wrapper-horizontal'>
-			<div class='left-sidebar'>
-				<div ui-sref-active='active' class='tab'>
-					<a ui-sref='home' class='ui-link'>
-						<div class='tab-text'>Home</div>
-					</a>
-				</div>
-				<div ui-sref-active='active' class='tab'>
-					<a ui-sref='questions' class='ui-link'>
-						<div class='tab-text'>Questions</div>
-					</a>
-				</div>
-				<div ui-sref-active='active' class='tab'>
-					<a ui-sref='tags' class='ui-link'>
-						<div class='tab-text'>Tags</div>
-					</a>
-				</div>
-			</div>
-			<div class='center-width mainbar'>
-				<ui-view></ui-view>
-			</div>
-			<div class='right-sidebar'></div>
-		</div>
-	</div>
+		<main style='height:100%'></main>
+    </div>
 	
+	<script src='x_nuvo_ko.KnowledgeOverflowBundle.jsdbx'></script>
+
+
 </j:jelly>]]></html>
         <name>portal</name>
         <processing_script/>
@@ -71,14 +51,14 @@ document.getElementsByTagName('head')[0].appendChild(meta);]]></client_script>
         <sys_created_on>2019-07-15 19:52:45</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>2c4458e7db6e3b408fdd3df3399619af</sys_id>
-        <sys_mod_count>60</sys_mod_count>
+        <sys_mod_count>100</sys_mod_count>
         <sys_name>portal</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_ui_page_2c4458e7db6e3b408fdd3df3399619af</sys_update_name>
-        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-25 14:48:22</sys_updated_on>
+        <sys_updated_by>nicholas.durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-08-06 17:45:33</sys_updated_on>
     </sys_ui_page>
 </record_update>
