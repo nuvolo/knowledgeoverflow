@@ -126,7 +126,7 @@ Object(_filter__WEBPACK_IMPORTED_MODULE_2__["filterSetup"])(mod);
 mod.$inject = ['$http', '$rootScope'];
 mod.run(function($http, $rootScope) {
     $http.defaults.headers.common["X-UserToken"] = g_ck;
-    $rootScope.isAdmin = g_user.hasRoleExactly('x_nuvo_ko.mod');
+    $rootScope.isAdmin = g_user.hasRole('x_nuvo_ko.mod');
 });
 
 
@@ -2702,7 +2702,7 @@ exports.push([module.i, "@media screen and (max-width: 500px) {\n    \n    .mobi
         <sys_created_on>2019-08-05 19:42:18</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>5d6b58961b833f004fc10f6e6e4bcb4d</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>x_nuvo_ko.KnowledgeOverflowBundle</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
@@ -2710,7 +2710,7 @@ exports.push([module.i, "@media screen and (max-width: 500px) {\n    \n    .mobi
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_ui_script_5d6b58961b833f004fc10f6e6e4bcb4d</sys_update_name>
         <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-08-07 15:23:30</sys_updated_on>
+        <sys_updated_on>2019-08-07 16:14:02</sys_updated_on>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>
