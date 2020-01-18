@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<database>
+<?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Webhooks" max_length="40" name="x_nuvo_ko_webhooks" type="collection">
-        <element label="Channel Name" max_length="50" name="channel_name" type="string"/>
+        <element display="true" label="Channel Name" max_length="50" name="channel_name" type="string"/>
         <element label="Url" max_length="350" name="url" type="string"/>
         <element label="Watched Tags" max_length="4000" name="watched_tags" reference="x_nuvo_ko_tags" type="glide_list"/>
     </element>

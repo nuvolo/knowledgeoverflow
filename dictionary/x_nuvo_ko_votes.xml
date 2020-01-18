@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<database>
+<?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Votes" max_length="40" name="x_nuvo_ko_votes" type="collection">
         <element label="Answer" max_length="32" name="answer" reference="x_nuvo_ko_answers" type="reference"/>
         <element label="Point Value" max_length="3" name="point_value" type="integer"/>

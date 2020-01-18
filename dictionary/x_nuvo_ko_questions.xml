@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<database>
+<?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Questions" max_length="40" name="x_nuvo_ko_questions" text_index="true" type="collection">
         <element default="0" label="Answers" max_length="40" name="answers" type="integer"/>
         <element label="Asker" max_length="32" name="asker" reference="sys_user" type="reference"/>
@@ -7,7 +6,7 @@
         <element label="Best Answer Type" max_length="15" name="best_answer_type" type="string"/>
         <element label="Commenters" max_length="4000" name="commenters" reference="sys_user" type="glide_list"/>
         <element attributes="ts_weight=3" label="Description" max_length="5000" name="description" text_index="true" type="string"/>
-        <element attributes="ts_weight=10" label="Question" max_length="150" name="question" text_index="true" type="string"/>
+        <element attributes="ts_weight=10" display="true" label="Question" max_length="150" name="question" text_index="true" type="string"/>
         <element label="Stars" max_length="4000" name="stars" reference="sys_user" type="glide_list"/>
         <element default="0" label="Views" max_length="40" name="views" type="integer"/>
         <element default="0" label="Votes" max_length="40" name="votes" type="integer"/>

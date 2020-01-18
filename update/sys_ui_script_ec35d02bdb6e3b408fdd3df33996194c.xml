@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update table="sys_ui_script">
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_script">
     <sys_ui_script action="INSERT_OR_UPDATE">
         <active>true</active>
         <description/>
@@ -117,6 +116,7 @@ mod.filter('formatShortDate', function () {
         <sys_update_name>sys_ui_script_ec35d02bdb6e3b408fdd3df33996194c</sys_update_name>
         <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
         <sys_updated_on>2019-08-06 13:37:58</sys_updated_on>
+        <ui_type>0</ui_type>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>

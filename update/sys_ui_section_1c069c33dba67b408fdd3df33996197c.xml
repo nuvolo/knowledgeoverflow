@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update>
+<?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_ui_section caption="" section_id="1c069c33dba67b408fdd3df33996197c" sys_domain="global" table="x_nuvo_ko_tags" version="3" view="">
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>tag</element>

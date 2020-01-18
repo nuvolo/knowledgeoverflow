@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<database>
+<?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Questions - Tags" max_length="40" name="x_nuvo_ko_m2m_tags_questions" type="collection">
         <element label="Questions" max_length="32" name="questions" reference="x_nuvo_ko_questions" type="reference"/>
         <element label="Tags" max_length="32" name="tags" reference="x_nuvo_ko_tags" type="reference"/>

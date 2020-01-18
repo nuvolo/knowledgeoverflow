@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<record_update>
+<?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_dictionary action="INSERT_OR_UPDATE" element="question" table="x_nuvo_ko_answers">
         <active>true</active>
         <array>false</array>
@@ -55,7 +54,7 @@
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
         <sys_created_on>2019-07-15 19:34:31</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
-        <sys_id>4d2f4427db6e3b408fdd3df3399619bf</sys_id>
+        <sys_id>c609aad01b3e7f40965021be6e4bcb4e</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_name>Question</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
@@ -63,8 +62,8 @@
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_dictionary_x_nuvo_ko_answers_question</sys_update_name>
-        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-15 19:34:31</sys_updated_on>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2019-08-07 18:42:43</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
