@@ -62,8 +62,8 @@
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_dictionary_x_nuvo_ko_questions_stars</sys_update_name>
-        <sys_updated_by>system</sys_updated_by>
-        <sys_updated_on>2019-08-07 18:42:45</sys_updated_on>
+        <sys_updated_by>Jason.Siegrist@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2020-01-22 00:12:26</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
