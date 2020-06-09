@@ -12,8 +12,9 @@
 	var question = request.queryParams.question[0];
 	var description = request.queryParams.description[0];
 	var tags = request.queryParams.tags[0];
+	var internal = request.queryParams.internal[0];
 	
-	return new x_nuvo_ko.QuestionUtil().updateQuestion(qid, question, description, tags);
+	return new x_nuvo_ko.QuestionUtil().updateQuestion(qid, question, description, tags, internal);
 
 })(request, response);]]></operation_script>
         <operation_uri>/api/x_nuvo_ko/portal/update_question</operation_uri>
@@ -28,17 +29,15 @@
         <sys_class_name>sys_ws_operation</sys_class_name>
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
         <sys_created_on>2019-07-24 18:56:27</sys_created_on>
-        <sys_customer_update>false</sys_customer_update>
         <sys_id>7dedd2161bbaf3004fc10f6e6e4bcbaa</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Update Question</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
-        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_ws_operation_7dedd2161bbaf3004fc10f6e6e4bcbaa</sys_update_name>
-        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-24 19:02:29</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-04 18:32:27</sys_updated_on>
         <web_service_definition display_value="Knowledge Portal API">00cc9c2fdb6e3b408fdd3df3399619e8</web_service_definition>
         <web_service_version/>
     </sys_ws_operation>

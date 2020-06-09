@@ -23,6 +23,7 @@ QuestionUtil.prototype = {
     },
 
     getPreview: function (gr) {
+		if(gr.internal && !gs.getUser().hasRole('x_nuvo_ko.internal')) return {internal:true};
         var preview = {
             question: gr.getValue("question"),
             id: gr.getValue("sys_id"),
@@ -31,7 +32,8 @@ QuestionUtil.prototype = {
             time: gr.getValue('sys_created_on'),
             author: gr.asker.getRefRecord().getValue('name'),
             votes: parseInt(gr.getValue('votes')),
-			best_answer: gr.getValue('best_answer')
+			best_answer: gr.getValue('best_answer'),
+			internal: !!gr.internal
         };
         preview.tags = this.tagUtil.getTagsForQuestion(preview.id);
         return preview;
@@ -42,8 +44,9 @@ QuestionUtil.prototype = {
         var gr = new GlideRecord(this.table.question);
         gr.get(question_id);
         if (gr.isValidRecord()) {
+			if(gr.internal && !gs.getUser().hasRole('x_nuvo_ko.internal')) return {internal:true};
             this.incrementViews(question_id);
-
+				
             var result = {
                 question: gr.getValue('question'),
                 description: gr.getValue('description'),
@@ -57,7 +60,8 @@ QuestionUtil.prototype = {
                 isAuthor: gr.asker.getRefRecord().getValue('sys_id') == gs.getUserID(),
                 time: gr.getValue('sys_created_on'),
                 best_answer: gr.getValue('best_answer'),
-                best_answer_type: gr.getValue('best_answer_type')
+                best_answer_type: gr.getValue('best_answer_type'),
+				internal:!!gr.internal
             };
             return result;
         }
@@ -178,11 +182,12 @@ QuestionUtil.prototype = {
         gr.update();
     },
 
-    createNewQuestion: function (question, description, tags) {
+    createNewQuestion: function (question, description, tags, internal) {
         var gr = new GlideRecord(this.table.question);
         gr.initialize();
         gr.question = question;
         gr.description = description;
+		gr.internal = internal;
 
         var qid = gr.insert();
         tags = tags.split(',');
@@ -231,12 +236,13 @@ QuestionUtil.prototype = {
         return gr.insert();
     },
 
-    updateQuestion: function (qid, question, description, tags) {
+    updateQuestion: function (qid, question, description, tags, internal) {
         var gr = new GlideRecord(this.table.question);
         gr.get(qid);
         if (gr.asker.getRefRecord().getValue('sys_id') == gs.getUserID()) {
             gr.question = question;
             gr.description = description;
+			gr.internal = internal;
             gr.update();
             tags = tags.split(',');
             this.tagUtil.stripTags(qid);
@@ -372,6 +378,7 @@ QuestionUtil.prototype = {
         if (filter == 'top') gr.orderByDesc('votes');
         if (filter == 'unanswered') gr.addQuery('answers', 0);
         if (filter != 'none') gr.orderByDesc('sys_created_on');
+		if (!gs.getUser().hasRole('x_nuvo_ko.internal')) gr.addQuery('internal', false);
         gr.chooseWindow(startWindow, endWindow);
         gr.query();
         var previews = [];
@@ -390,16 +397,14 @@ QuestionUtil.prototype = {
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
         <sys_created_on>2019-07-15 20:14:02</sys_created_on>
-        <sys_customer_update>false</sys_customer_update>
         <sys_id>c44818abdb6e3b408fdd3df3399619c7</sys_id>
-        <sys_mod_count>123</sys_mod_count>
+        <sys_mod_count>131</sys_mod_count>
         <sys_name>QuestionUtil</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy>read</sys_policy>
-        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_script_include_c44818abdb6e3b408fdd3df3399619c7</sys_update_name>
-        <sys_updated_by>nicholas.durkin@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-08-06 16:59:17</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-04 18:54:58</sys_updated_on>
     </sys_script_include>
 </record_update>
