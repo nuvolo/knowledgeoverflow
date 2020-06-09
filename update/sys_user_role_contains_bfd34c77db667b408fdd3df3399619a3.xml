@@ -5,13 +5,11 @@
         <sys_class_name>sys_user_role_contains</sys_class_name>
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
         <sys_created_on>2019-07-16 13:18:35</sys_created_on>
-        <sys_customer_update>false</sys_customer_update>
         <sys_id>bfd34c77db667b408fdd3df3399619a3</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_name>x_nuvo_ko.user.x_nuvo_ko.mod</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
-        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_user_role_contains_bfd34c77db667b408fdd3df3399619a3</sys_update_name>
         <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>

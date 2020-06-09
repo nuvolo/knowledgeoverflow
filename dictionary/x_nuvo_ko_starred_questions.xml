@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Starred Questions" max_length="40" name="x_nuvo_ko_starred_questions" type="collection">
+    <element label="Starred Questions" max_length="40" name="x_nuvo_ko_starred_questions" sizeclass="0" type="collection">
         <element label="Question" max_length="32" name="question" reference="x_nuvo_ko_questions" type="reference"/>
         <element label="UserID" max_length="40" name="userid" type="string"/>
         <index name="index">

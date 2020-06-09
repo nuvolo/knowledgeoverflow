@@ -47,23 +47,21 @@
         <reference_qual/>
         <reference_qual_condition/>
         <reference_type/>
-        <sizeclass/>
+        <sizeclass>4</sizeclass>
         <spell_check>false</spell_check>
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
         <sys_created_on>2019-07-15 19:29:47</sys_created_on>
-        <sys_customer_update>false</sys_customer_update>
-        <sys_id>4e09aad01b3e7f40965021be6e4bcb31</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_id>6e44ed44dbd150103b517a613996198b</sys_id>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>x_nuvo_ko_questions</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
-        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
-        <sys_update_name>sys_dictionary_x_nuvo_ko_questions_NULL</sys_update_name>
-        <sys_updated_by>Jason.Siegrist@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2020-01-22 00:12:25</sys_updated_on>
+        <sys_update_name>sys_dictionary_x_nuvo_ko_questions_null</sys_update_name>
+        <sys_updated_by>system</sys_updated_by>
+        <sys_updated_on>2020-06-09 16:16:02</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>true</text_index>
         <unique>false</unique>
