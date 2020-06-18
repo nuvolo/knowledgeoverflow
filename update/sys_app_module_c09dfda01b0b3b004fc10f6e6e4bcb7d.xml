@@ -3,6 +3,7 @@
         <active>true</active>
         <application display_value="Knowledge Overflow">614cc8a3db6e3b408fdd3df33996198c</application>
         <assessment/>
+        <content_page/>
         <device_type/>
         <filter/>
         <hint>Open the Knowledge Overflow Homepage</hint>
@@ -18,9 +19,12 @@
         <query>x_nuvo_ko_portal.do#!/home</query>
         <report/>
         <roles/>
+        <survey/>
+        <survey_overwrite>false</survey_overwrite>
         <sys_class_name>sys_app_module</sys_class_name>
         <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
         <sys_created_on>2019-07-31 16:22:37</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>c09dfda01b0b3b004fc10f6e6e4bcb7d</sys_id>
@@ -29,6 +33,7 @@
         <sys_overrides/>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
         <sys_update_name>sys_app_module_c09dfda01b0b3b004fc10f6e6e4bcb7d</sys_update_name>
         <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>

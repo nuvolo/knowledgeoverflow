@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Questions" max_length="40" name="x_nuvo_ko_questions" sizeclass="4" text_index="true" type="collection">
+    <element label="Questions" max_length="40" name="x_nuvo_ko_questions" text_index="true" type="collection">
         <element default="0" label="Answers" max_length="40" name="answers" type="integer"/>
         <element label="Asker" max_length="32" name="asker" reference="sys_user" type="reference"/>
         <element label="Best Answer" max_length="32" name="best_answer" reference="x_nuvo_ko_answers" type="reference"/>

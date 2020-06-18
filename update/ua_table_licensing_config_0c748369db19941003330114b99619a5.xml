@@ -4,22 +4,24 @@
         <license_condition/>
         <license_model>none</license_model>
         <license_roles/>
-        <name>x_nuvo_ko_answers</name>
+        <name>x_nuvo_ko_common_words</name>
         <op_delete>true</op_delete>
         <op_insert>true</op_insert>
         <op_update>true</op_update>
         <owner_condition/>
         <sys_class_name>ua_table_licensing_config</sys_class_name>
-        <sys_created_by>nabil.enayet@nuvolo.com</sys_created_by>
-        <sys_created_on>2019-07-15 19:12:02</sys_created_on>
-        <sys_id>27442184dbd150103b517a613996192f</sys_id>
+        <sys_created_by>Nicholas.Durkin@nuvolo.com</sys_created_by>
+        <sys_created_on>2019-07-15 19:38:34</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>0c748369db19941003330114b99619a5</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name>x_nuvo_ko_answers</sys_name>
+        <sys_name>x_nuvo_ko_common_words</sys_name>
         <sys_package display_value="Knowledge Overflow" source="x_nuvo_ko">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_package>
         <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Knowledge Overflow">9c384c6b1b2ebf004fc10f6e6e4bcb4a</sys_scope>
-        <sys_update_name>ua_table_licensing_config_27442184dbd150103b517a613996192f</sys_update_name>
-        <sys_updated_by>nabil.enayet@nuvolo.com</sys_updated_by>
-        <sys_updated_on>2019-07-15 19:12:02</sys_updated_on>
+        <sys_update_name>ua_table_licensing_config_0c748369db19941003330114b99619a5</sys_update_name>
+        <sys_updated_by>Nicholas.Durkin@nuvolo.com</sys_updated_by>
+        <sys_updated_on>2019-07-15 19:38:34</sys_updated_on>
     </ua_table_licensing_config>
 </record_update>

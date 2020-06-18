@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Notifications" max_length="40" name="x_nuvo_ko_notifications" sizeclass="5" type="collection">
+    <element label="Notifications" max_length="40" name="x_nuvo_ko_notifications" type="collection">
         <element label="HTML" max_length="6000" name="html" type="string"/>
         <element label="Question" max_length="32" name="question" reference="x_nuvo_ko_questions" type="reference"/>
         <element default="False" label="Seen" max_length="40" name="seen" type="boolean"/>
